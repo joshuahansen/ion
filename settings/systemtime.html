@@ -1,0 +1,124 @@
+<div class="row">
+	<div class="col-2"></div>
+	<div class="Settings col-8">
+		<h1>System Time</h1>
+		</br>
+		<div>
+			<h4><input type="radio" name="systemTime" id="ntp" value="ntp">Synchronize with NTP server time</h4>
+			<hr>
+			<label>Time Between Automatic Updates</label>
+			<select class="textbox" id="autoUpdate">
+				<script>
+					var autoUpdate = ["NO", "1 Hour", "3 Hours", "12 Hours", "1 Day", "10 Days", "30 Days"];
+					var select = document.getElementById("autoUpdate");
+					for(var i = 0; i < autoUpdate.length; i++)
+					{
+						var opt = document.createElement("option");
+						opt.value = autoUpdate[i];
+						opt.innerHTML = autoUpdate[i];
+						if(autoUpdate[i].localeCompare("1 Hour") == 0)
+						{
+							opt.selected = "selected";
+						}
+						select.appendChild(opt);
+					}
+				</script>
+			</select>
+			</br>
+			</br>
+			<label>NTP Server</label>
+			<select class="textbox" id="ntpServer">
+				<script>
+					$.getJSON("timeServers", function(data) {
+						success: {
+							var serverSelect = document.getElementById("ntpServer");
+							for(var i = 0; i < data.length; i++)
+							{
+								var opt = document.createElement("option");
+								opt.value = data[i];
+								opt.innerHTML = data[i];
+								serverSelect.appendChild(opt);
+							}
+						}
+					});
+				</script>
+			</select>
+			</br>
+			</br>
+			<label>Add Time Server</label>
+			<input type="text" class="textbox" id="newNTPServer">
+			</br>
+			</br>
+			<button class="textbox" onclick=" return addTimeServer()">Add Time Server</button>
+				<script>
+					function addTimeServer()
+					{
+						var newServer = document.getElementById("newNTPServer");
+						var opt = document.createElement("option");
+						opt.value = newServer.value;
+						opt.innerHTML = newServer.value;
+						opt.selected = "selected";
+						newServer.value = "";
+						document.getElementById("timeServer").appendChild(opt);
+						return false;
+					}
+				</script>
+			</br>
+			</br>
+			<label>Time Zone</label>
+			<select class="textbox" id="timeZone">
+			<script>
+				var timezones = ["GMT-12:00", "GMT-11:00", "GMT-10:00", "GMT-9:00", "GMT-8:00", "GMT-7:00", "GMT-6:00", "GMT-5:00",
+					"GMT-4:00", "GMT-3:30", "GMT-3:00", "GMT-2:00", "GMT-1:00", "GMT", "GMT+1:00", "GMT+2:00", "GMT+3:00", "GMT+3:30",
+					"GMT+4:00", "GMT+5:00", "GMT+6:00", "GMT+7:00", "GMT+8:00", "GMT+9:00", "GMT+10:00", "GMT+11:00", "GMT+12:00", "GMT+13:00"];
+				var select = document.getElementById("timeZone");
+	
+				for(var i = 0; i < timezones.length; i++)
+				{
+					var opt = document.createElement("option");
+					opt.value = timezones[i];
+					opt.innerHTML = timezones[i];
+					if(timezones[i].localeCompare("GMT") == 0)
+					{
+						opt.selected = "selected";
+					}
+					select.appendChild(opt);
+				}
+			</script>
+			</select>
+			</br>
+			</br>
+			<label>Use Daylight Saving Time</label>
+			<select class="textbox" id="daylightSavings">
+				<option value="NO">NO</option>
+				<option value="YES">YES</option>
+			</select>
+			</br>
+			</br>
+		</div>
+		<div>
+			<h4><input type="radio" name="systemTime" id="sysTime" value="sysTime" checked>Synchronize with System Time</h4>
+			<hr>
+			<label>System Time (hh:mm:ss)</label>
+			<p class="textbox" id="systemTime"></p>
+			</br>
+			</br>
+			<label>System Date(dd/mm/yyyy)</label>
+			<p class="textbox" id="systemDate"></p>
+		</div>
+		<div>
+			<h4><input type="radio" name="systemTime" id="manualTime" value="manual">Manually Setting</h4>
+			<hr>
+			<label>Time (hh:mm:ss)</label>
+			<input type="text" class="textbox" id="manualTime">
+			</br>
+			</br>
+			<label>Date(dd/mm/yyyy)</label>
+			<input type="text" class="textbox" id="manualDate">
+		</div>
+		</br>
+		<button onclick="return updateDate()" class="updateSetting">Save</button>
+
+	</div>
+	<div class="col-2"></div>
+</div>

@@ -1,0 +1,125 @@
+<div class="row">
+	<div id="sensorModal" class="modal">
+		<div class="modalContent">
+			<span class="close" onclick="closeModal()">&times;</span>
+			<h2 id="modalHeading">Set Sensor Thresholds</h2>
+			<div class="row">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<form method="get" id="setThresholdForm">
+						<label class="rangeLabel">Max Threshold</label>
+						</br>
+						<label class="rangeBar">0
+							<input type="range" min="0" max="100" class="thresholdRange" id="maxThreshold" oninput="showMaxValue(this.value)" value="50"/>
+							<span id="maxThreshMax">100</span></label>
+						</br>
+						<input type="text" value="50" class="rangeValue" id="maxValue" oninput="changeMaxRange(this.value)"/>
+						</br>
+						</br>
+						<label class="rangeLabel">Min Threshold</label>
+						</br>
+						<label class="rangeBar">0
+							<input type="range" min="0" max="100" class="thresholdRange" id="minThreshold" oninput="showMinValue(this.value)" value="20"/>
+							<span id=minThreshMax>100</span></label>
+						</br>
+						<input type="text" value="20" class="rangeValue" id="minValue" oninput="changeMinRange(this.value)"/>
+						</br>
+						</br>
+						<input type="reset" class="reset" value="Reset">
+						<input type="submit" class="submit" value="Set Threshold">
+					</form>
+				</div>
+				<div class="col-1"></div>
+			</div>
+
+		</div>
+	</div>
+	<div class="sensors col-3" id="s1" onclick="setThres(0)">
+		<span id="s1label" class="label">Port 1</span>
+		</br>
+		<span id="s1value" class="value"></span>
+		</br>
+		<span id="s1type"></span>
+	</div>
+	<div class="sensors col-3" id="s2" onclick="setThres(1)">
+		<span id="s2label"class="label">Port 2</span>
+		</br>
+		<span id="s2value" class="value"></span>
+		</br>
+		<span id="s2type"></span>
+	</div>
+	<div class="sensors col-3" id="s3" onclick="setThres(2)">
+		<span id="s3label"class="label">Port 3</span>
+		</br>
+		<span id="s3value" class="value"></span>
+		</br>
+		<span id="s3type"></span>
+	</div>
+	<div class="sensors col-3" id="s4" onclick="setThres(3)">
+		<span id="s4label"class="label">Port 4</span>
+		</br>
+		<span id="s4value" class="value"></span>
+		</br>
+		<span id="s4type"></span>
+	</div>
+</div>
+<div class="row">
+	<div class="sensors col-3" id="s5" onclick="setThres(4)">
+		<span id="s5label"class="label">Port 5</span>
+		</br>
+		<span id="s5value" class="value"></span>
+		</br>
+		<span id="s5type"></span>
+	</div>
+	<div class="sensors col-3" id="s6" onclick="setThres(5)">
+		<span id="s6label"class="label">Port 6</span>
+		</br>
+		<span id="s6value" class="value"></span>
+		</br>
+		<span id="s6type"></span>
+	</div>
+	<div class="sensors col-3" id="s7" onclick="setThres(6)">
+		<span id="s7label"class="label">Port 7</span>
+		</br>
+		<span id="s7value" class="value"></span>
+		</br>
+		<span id="s7type"></span>
+	</div>
+	<div class="sensors col-3" id="s8" onclick="setThres(7)">
+		<span id="s8label"class="label">Port 8</span>
+		</br>
+		<span id="s8value" class="value"></span>
+		</br>
+		<span id="s8type"></span>
+	</div>
+</div>
+<div class="row">
+	<div class="sensors col-3" id="s9" onclick="setThres(8)">
+		<span id="s9label"class="label">Port 9</span>
+		</br>
+		<span id="s9value" class="value"></span>
+		</br>
+		<span id="s9type"></span>
+	</div>
+	<div class="sensors col-3" id="s10" onclick="setThres(9)">
+		<span id="s10label"class="label">Port 10</span>
+		</br>
+		<span id="s10value" class="value"></span>
+		</br>
+		<span id="s10type"></span>
+	</div>
+	<div class="sensors col-3" id="s11" onclick="setThres(10)">
+		<span id="s11label"class="label">Port 11</span>
+		</br>
+		<span id="s11value" class="value"></span>
+		</br>
+		<span id="s11type"></span>
+	</div>
+	<div class="sensors col-3" id="s12" onclick="setThres(11)">
+		<span id="s12label"class="label">Port 12</span>
+		</br>
+		<span id="s12value" class="value"></span>
+		</br>
+		<span id="s12type"></span>
+	</div>
+</div>

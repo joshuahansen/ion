@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>ION</title>
+		<link rel='stylesheet' href='style.css' type='text/css'/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="javascript/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="javascript/Chart.js"></script>
+	</head>
+
+	<body onload="loadContent('info.html', 'info', loadSensors)">
+ 		<main>
+		<div class="row">
+			<div class="navImage col-12">	
+				<h1 id="sensorPod"><img src='logo.gif' id='mainLogo'>SensorPod</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="navBar col-2">
+				<li class="nav"><a href="javascript:void(0);" onclick="loadContent('info.html', 'info', loadSensors)" class="navButton" id="info">Information</a></li>
+				<li class="nav"><a href="javascript:void(0);" onclick="loadContent('alerts.html', 'alerts', loadAlerts)" class="navButton" id="alerts">Alerts</a></li>
+				<li class="nav"><a href="javascript:void(0);" onclick="loadContent('history.html', 'history', loadHistory)" class="navButton" id="history">History</a></li>
+				<li class="nav"><a href="javascript:void(0);" onclick="loadContent('settings/network.html', 'config', loadNetwork); expandConfig() "  class="navButton" id="config">Configuration</a>
+					<ul id="configSettings">
+						<li class="configNav"><a href="javascript:void(0);" onclick="loadContent('settings/network.html', 'network', loadNetwork)" class="configNavButton" id="network">Network Settings</a></li>
+						<li class="configNav"><a href="javascript:void(0);" onclick="loadContent('settings/alarm.html', 'alarm', loadEmails)"class="configNavButton" id="alarm">Alarm Settings</a></li>
+						<li class="configNav"><a href="javascript:void(0);" onclick="loadContent('settings/reboot.html', 'reboot', )" class="configNavButton" id="reboot">Reboot</a></li>
+						<li class="configNav"><a href="javascript:void(0);" onclick="loadContent('settings/firmware.html', 'firmware', )" class="configNavButton" id="firmware">Firmware Update</a></li>
+						<li class="configNav"><a href="javascript:void(0);" onclick="loadContent('settings/systemtime.html', 'systemtime', loadSystemTime)" class="configNavButton" id="systemtime">System Time</a></li>
+						<li class="configNav"><a href="javascript:void(0);" onclick="loadContent('settings/snmp.html', 'snmp', )" class="configNavButton" id="snmp">SNMP</a></li>
+					</ul>
+				</li>
+				<li class="nav"><a href="javascript:void(0);" onclick="loadContent('admin.html', 'admin', )" class="navButton" id="admin">Administration</a></li>
+			</div>
+			
+			<div class="col-1"></div>
+			<div class="col-8" id="display"></div>
+			<div class="col-1"></div>
+
+			<script src="javascript/script.js"></script>
+		</div>
+		</main>
+	</body>
+</html>

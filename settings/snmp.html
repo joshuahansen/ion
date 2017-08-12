@@ -1,0 +1,56 @@
+<div class="row">
+	<div class="col-2"></div>
+	<div class="Settings col-8">
+		<h2>SNMP</h2>
+		<form id="snmpform" method="post">
+			<h4>MIB System</h4>
+			<hr>
+			</br>
+			<label>System Name</label>
+			<input type="text" class="textbox" id="snInput">
+			</br>
+			</br>
+			<label>System Contact</label>
+			<input type="text" class="textbox" id="scInput">
+			</br>
+			</br>
+			<label>System Location</label>
+			<input type="text" class="textbox" id="slInput">
+			</br>
+			</br>
+			</br>
+			
+			<h4>SNMP UDP Port</h4>
+			<hr>
+			</br>
+			<label>NetAgent SNMP Port</label>
+			<input type="text" class="textbox" id="netagentport">
+			</br>
+			</br>
+			<label>Trap Receive Port</label>
+			<input type="text" class="textbox" id="trapport">
+			</br>
+			</br>
+			</br>
+
+			<h4>SNMPv3 Engine ID</h4>
+			<hr>
+			</br>
+			<label>SNMPv3 Engine ID Format Type</label>
+			<select class="textbox" id="snmpv3dd">
+				<option value="mac">MAC Adress</option>
+				<option value="IPv4">IPv4</option>
+				<option value="IPv6">IPv6</option>
+				<option value="manually">Manually</option>
+			</select>
+			</br>
+			</br>
+			<label>SNMPv3 Engine ID Text</label>
+			<input type="text" class="textbox" id="snmpv3input">
+			</br>
+			</br>
+			<input type="submit" class="submit" value="Submit">
+		</form>
+	</div>
+	<div class="col-2"></div>
+</div>
