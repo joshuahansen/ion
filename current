@@ -1,12 +1,12 @@
 {
 	"sensors": [{
 			"port": 1,
-			"name": "",
-			"type": 0,
-			"stringValue": "",
-			"intValue": 0,
-			"threshMax": 0,
-			"threshMin": 0
+			"name": "Back Door Temperature Sensor",
+			"type": 1,
+			"stringValue": "26.75",
+			"intValue": 26,
+			"threshMax": 56,
+			"threshMin": 20
 		},
 		{
 			"port": 2,

@@ -64,8 +64,8 @@ function closeConfig() {
 /*Info JS*/
 function loadSensors()
 {
-	dataInterval = setInterval(updateCurrentValues, 1500);
-	updateCurrentValues();
+
+	updateCurrentDials();
 }
 function updateCurrentValues()
 {
@@ -88,6 +88,66 @@ function updateCurrentValues()
 			}
 		}
 	});
+}
+function updateCurrentDials()
+{
+	$.getJSON("current", function(data) { 
+		success:
+		for(var i = 0; i < data.sensors.length; i++)
+		{
+			//Set value to empty string if no sensor is attached
+			if(data.sensors[i].type == 0)
+			{
+				$("#s" + data.sensors[i].port + "value").text("");
+			}
+			
+			$('.dial').knob({
+				'change' : function (v) { console.log(v); }
+			});
+			$('.dial-thresh').knob({
+				'change' : function (v) { console.log(v); }
+			});
+			$('.dial').trigger(
+        			'configure',
+        			{
+					"min":0,
+					"max":100,
+					"fgColor":"#43f943",
+					"inputColor": "#43f943"
+				}
+			        
+    			);
+			$('.dial-thresh').trigger(
+				'configure',
+				{
+					"min":0,
+					"max":100,
+					"fgColor": "#f21313"
+				}
+			);
+			$('#port' + data.sensors[i].port)
+				.val(data.sensors[i].stringValue)
+				.trigger('change');
+				
+			//Set all port types
+			$("#s"+ data.sensors[i].port + "type").text(sensorTypes[data.sensors[i].type]);
+			//Sets name of sensor
+			if(data.sensors[i].name.localeCompare("") != 0)
+			{
+				$("#s" + data.sensors[i].port + "label").text(data.sensors[i].name);
+			}
+		}
+	});
+}	
+function resize()
+{
+	console.log("ONRESIZE WORKING");
+	var width = window.outerWidth;
+	console.log(width);
+	if(width < 1000)
+	{
+		document.getElementById("port1").setAttribute("data-width", "40%");
+	}
 }
 function setThres(portNum) {
 	$.getJSON("current", function(data) {
