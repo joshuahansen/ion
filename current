@@ -19,7 +19,7 @@
 		},
 		{
 			"port": 3,
-			"name": "",
+			"name": "Side Door",
 			"type": 2,
 			"stringValue": "43.23",
 			"intValue": 43,
@@ -40,7 +40,7 @@
 			"name": "",
 			"type": 4,
 			"stringValue": "Closed",
-			"intValue": 1,
+			"intValue": 0,
 			"threshMax": 1,
 			"threshMin": 0
 		},
@@ -57,10 +57,10 @@
 			"port": 7,
 			"name": "",
 			"type": 6,
-			"stringValue": "32.33",
-			"intValue": 32,
-			"threshMax": 76,
-			"threshMin": 25
+			"stringValue": "Contact",
+			"intValue": 1,
+			"threshMax": 1,
+			"threshMin": 0
 		},
 		{
 			"port": 8,
@@ -103,7 +103,7 @@
 			"name": "",
 			"type": 4,
 			"stringValue": "Open",
-			"intValue": 0,
+			"intValue": 1,
 			"threshMax": 1,
 			"threshMin": 0
 		}

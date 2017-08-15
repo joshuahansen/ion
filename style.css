@@ -116,6 +116,9 @@ div.navImage {
 	background-color: #0B304C;
 	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
+.scrollText {
+	text-align: center;
+}
 
 .value {
 	font-size: 200%;
@@ -194,10 +197,6 @@ div.navImage {
 	left: 20%;
 	margin: 10px;
 	padding: 10px;
-}
-
-#setThresholdForm {
-	margin: auto;
 }
 
 /*Admin CSS*/

@@ -2,32 +2,36 @@
 	<div id="sensorModal" class="modal">
 		<div class="modalContent">
 			<span class="close" onclick="closeModal()">&times;</span>
-			<h2 id="modalHeading">Set Sensor Thresholds</h2>
+			<h2 id="modalHeading">Set Thresholds</h2>
+			<label style="font-size: 25px; position: relative; left: 35%">Name:</label>
+			<input type="text" value="Sensor" id="portName" size="30" style="font-size: 20px; position: relative; left: 35%">
+			<label id="portNum" value="" hidden></label>
 			<div class="row">
 				<div class="col-1"></div>
 				<div class="col-10">
-					<form method="get" id="setThresholdForm">
-						<label class="rangeLabel">Max Threshold</label>
-						</br>
-						<label class="rangeBar">0
-							<input type="range" min="0" max="100" class="thresholdRange" id="maxThreshold" oninput="showMaxValue(this.value)" value="50"/>
-							<span id="maxThreshMax">100</span></label>
-						</br>
-						<input type="text" value="50" class="rangeValue" id="maxValue" oninput="changeMaxRange(this.value)"/>
-						</br>
-						</br>
+					<label class="rangeLabel">Max Threshold</label>
+					</br>
+					<label class="rangeBar">
+						<span id="maxThreshMin">0</span>
+						<input type="range" min="0" max="100" class="thresholdRange" id="maxThreshold" oninput="showMaxValue(this.value)" value="50"/>
+						<span id="maxThreshMax">100</span></label>
+					</br>
+					<input type="text" value="50" class="rangeValue" id="maxValue" oninput="changeMaxRange(this.value)"/>
+					</br>
+					</br>
+					<div id="minThreshRange">
 						<label class="rangeLabel">Min Threshold</label>
 						</br>
-						<label class="rangeBar">0
+						<label class="rangeBar">
+							<span id="minThreshMin">0</span>
 							<input type="range" min="0" max="100" class="thresholdRange" id="minThreshold" oninput="showMinValue(this.value)" value="20"/>
 							<span id=minThreshMax>100</span></label>
 						</br>
 						<input type="text" value="20" class="rangeValue" id="minValue" oninput="changeMinRange(this.value)"/>
 						</br>
-						</br>
-						<input type="reset" class="reset" value="Reset">
-						<input type="submit" class="submit" value="Set Threshold">
-					</form>
+					</div>
+					</br>
+					<button type="submit" class="submit" id="setThresh" value="Set Threshold" onclick="updateThresh()">Set Threshold</button>
 				</div>
 				<div class="col-1"></div>
 			</div>
@@ -35,107 +39,115 @@
 		</div>
 	</div>
 	<div class="sensors col-3" id="s1" onclick="setThres(0)">
-		<span id="s1label" class="label">Port 1</span>
+		<marquee id="port1scroll" class="scrollText" scrollAmount="0"><span id="s1label" class="label">Port 1</span></marquee>
 		</br>
-	<!--	<span id="s1value" class="value"></span>
-	</br>-->
-	<div style="position:relative; margin:auto">
-		<input type="text" id="port1" data-step=".1" data-width="50%" class="dial" value="0" >
-		<input type="text" id="port1thresh" data-thickness=".1" readOnly="true" data-displayInput="false" data-width="60%" class="dial-thresh" value="100" >
-	</div>
+		<input type="text" id="port1" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s1type"></span>
-	</div>
+		<span id="s1value" ></span>
+		</br>
+		<marquee id="type1scroll" class="scrollText" scrollAmount="0"><span id="s1type"></span></marquee>
+        </div>
 	<div class="sensors col-3" id="s2" onclick="setThres(1)">
-		<span id="s2label"class="label">Port 2</span>
+		<marquee id="port2scroll" class="scrollText" scrollAmount="0"><span id="s2label"class="label">Port 2</span></marquee>
 		</br>
-		<!--		<span id="s2value" class="value"></span>-->
-		<input type="text" id="port2" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port2" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s2type"></span>
+		<span id="s2value"></span>
+		</br>
+		<marquee id="type2scroll" class="scrollText" scrollAmount="0"><span id="s2type"></span></marquee>
 	</div>
 	<div class="sensors col-3" id="s3" onclick="setThres(2)">
-		<span id="s3label"class="label">Port 3</span>
+		<marquee id="port3scroll" class="scrollText" scrollAmount="0"><span id="s3label"class="label">Port 3</span></marquee>
 		</br>
-		<!--		<span id="s3value" class="value"></span>-->
-		<input type="text" id="port3" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port3" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s3type"></span>
+		<span id="s3value" ></span>
+		</br>
+		<marquee id="type3scroll" class="scrollText" scrollAmount="0"><span id="s3type"></span></marquee>
 	</div>
 	<div class="sensors col-3" id="s4" onclick="setThres(3)">
-		<span id="s4label"class="label">Port 4</span>
+		<marquee class="scrollText" scrollAmount="0" id="port4scroll"><span id="s4label"class="label">Port 4</span></marquee>
 		</br>
-		<!--		<span id="s4value" class="value"></span>-->
-		<input type="text" id="port4" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port4" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s4type"></span>
+		<span id="s4value" ></span>
+		</br>
+		<marquee id="type4scroll" class="scrollText" scrollAmount="0"><span id="s4type"></span></marquee>
 	</div>
 </div>
 <div class="row">
 	<div class="sensors col-3" id="s5" onclick="setThres(4)">
-		<span id="s5label"class="label">Port 5</span>
+		<marquee id="port5scroll" class="scrollText" scrollAmount="0"><span id="s5label"class="label">Port 5</span></marquee>
 		</br>
-		<!--		<span id="s5value" class="value"></span>-->
-		<input type="text" id="port5" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port5" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s5type"></span>
+		<span id="s5value" ></span>
+		</br>
+		<marquee id="type5scroll" class="scrollText" scrollAmount="0"><span id="s5type"></span></marquee>
 	</div>
 	<div class="sensors col-3" id="s6" onclick="setThres(5)">
-		<span id="s6label"class="label">Port 6</span>
+		<marquee id="port6scroll" class="scrollText" scrollAmount="0"><span id="s6label"class="label">Port 6</span></marquee>
 		</br>
-		<!--		<span id="s6value" class="value"></span>-->
-		<input type="text" id="port6" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port6" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s6type"></span>
+		<span id="s6value" ></span>
+		</br>
+		<marquee id="type6scroll" class="scrollText" scrollAmount="0"><span id="s6type"></span></marquee>
 	</div>
 	<div class="sensors col-3" id="s7" onclick="setThres(6)">
-		<span id="s7label"class="label">Port 7</span>
+		<marquee id="port7scroll" class="scrollText" scrollAmount="0"><span id="s7label"class="label">Port 7</span></marquee>
 		</br>
-<!--		<span id="s7value" class="value"></span>-->
-		<input type="text" id="port7" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port7" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s7type"></span>
+		<span id="s7value" ></span>
+		</br>
+		<marquee id="type7scroll" class="scrollText" scrollAmount="0"><span id="s7type"></span></marquee>
 	</div>
 	<div class="sensors col-3" id="s8" onclick="setThres(7)">
-		<span id="s8label"class="label">Port 8</span>
+		<marquee id="port8scroll" class="scrollText" scrollAmount="0"><span id="s8label"class="label">Port 8</span></marquee>
 		</br>
-		<!--<span id="s8value" class="value"></span>-->
-		<input type="text" id="port8" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port8" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s8type"></span>
+		<span id="s8value" ></span>
+		</br>
+		<marquee id="type8scroll" class="scrollText" scrollAmount="0"><span id="s8type"></span></marquee>
 	</div>
 </div>
 <div class="row">
 	<div class="sensors col-3" id="s9" onclick="setThres(8)">
-		<span id="s9label"class="label">Port 9</span>
+		<marquee id="port9scroll" class="scrollText" scrollAmount="0"><span id="s9label"class="label">Port 9</span></marquee>
 		</br>
-<!--		<span id="s9value" class="value"></span>-->
-		<input type="text" id="port9" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port9" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s9type"></span>
+		<span id="s9value" ></span>
+		</br>
+		<marquee id="type9scroll" class="scrollText" scrollAmount="0"><span id="s9type"></span></marquee>
 	</div>
 	<div class="sensors col-3" id="s10" onclick="setThres(9)">
-		<span id="s10label"class="label">Port 10</span>
+		<marquee id="port10scroll" class="scrollText" scrollAmount="0"><span id="s10label"class="label">Port 10</span></marquee>
 		</br>
-		<!--		<span id="s10value" class="value"></span>-->
-		<input type="text" id="port10" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port10" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s10type"></span>
+		<span id="s10value" ></span>
+		</br>
+		<marquee id="type10scroll" class="scrollText" scrollAmount="0"><span id="s10type"></span></marquee>
 	</div>
 	<div class="sensors col-3" id="s11" onclick="setThres(10)">
-		<span id="s11label"class="label">Port 11</span>
+		<marquee id="port11scroll" class="scrollText" scrollAmount="0"><span id="s11label"class="label">Port 11</span></marquee>
 		</br>
-<!--		<span id="s11value" class="value"></span>-->
-		<input type="text" id="port11" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port11" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s11type"></span>
+		<span id="s11value" ></span>
+		</br>
+		<marquee id="type11scroll" class="scrollText" scrollAmount="0"><span id="s11type"></span></marquee>
 	</div>
 	<div class="sensors col-3" id="s12" onclick="setThres(11)">
-		<span id="s12label"class="label">Port 12</span>
+		<marquee id="port12scroll" class="scrollText" scrollAmount="0"><span id="s12label"class="label">Port 12</span></marquee>
 		</br>
-		<!--	<span id="s12value" class="value"></span>-->
-		<input type="text" id="port12" data-step=".1" data-width="50%" class="dial" value="0" >
+		<input type="text" id="port12" data-step=".1" data-width="50%" class="dial" value="0" readonly>
 		</br>
-		<span id="s12type"></span>
+		<span id="s12value" ></span>
+		</br>
+		<marquee id="type12scroll" class="scrollText" scrollAmount="0"><span id="s12type"></span></marquee>
 	</div>
 </div>
