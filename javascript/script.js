@@ -527,6 +527,7 @@ function updateDate()
 		/*var xhttp = new XMLHttpRequest();
 		xhttp.open("GET", "admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass, true);
 		xhttp.send();*/
+		var unixtime = Date.parse("24-Nov-2009 17:57:35").getTime()/1000
 		return false;
 	}
 	else if(radioValue.localeCompare("sysTime") == 0)
@@ -536,15 +537,20 @@ function updateDate()
 		/*var xhttp = new XMLHttpRequest();
 		xhttp.open("GET", "admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass, true);
 		xhttp.send();*/
+		var unixtime = Date.parse("24 Nov, 2009 17:57:35")/1000;
 		return false;
 	}
 	else if(radioValue.localeCompare("manual") == 0)
 	{
 		//CONVERT MANUAL INPUT TO UNIX TIMESTAMP
 		console.log("DEBUG: manual");
-		/*var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass, true);
-		xhttp.send();*/
+		var manDate = new Date(document.getElementById("manualDate").value);
+		var day = manDate.getDate();
+		var month = manDate.getMonth();
+		var year = manDate.getYear();
+		var time = document.getElementById("manualTime").value;
+		var unixtime = Date.parse("15 Aug, 2017 16:00:35")/1000;
+		$.getJSON("/systemTime?unix=" + unixtime);
 		return false;
 	}
 }
