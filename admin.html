@@ -2,13 +2,12 @@
 	<div class= "col-4"></div>
 	<div class="settings col-4" id="">
 		<h2>Administrator</h2>
-		<form id="adminSettings" action="updatePass">
 			<label id="username" class="adminLabel"> User Name:</label>
 			<input type="text" class="textbox" value="admin" readonly>
 			</br>
 			</br>
 			<label id="currentPass" class="adminLabel">Current Password:</label>
-			<input type="password" class="textbox" id="currentPass">
+			<input type="password" class="textbox" id="currentPassInput">
 			</br>
 			</br>
 			</br>
@@ -20,9 +19,8 @@
 			<input type="password" class="textbox" id="confirmPassInput">
 			</br>
 			</br>
-			<input type="reset" name="reset" class="reset" value="Cancel">
-			<input type="submit" class="submit" value="Submit">
-		</form>
+			<p id="errormsg" style="color: red;"></p>
+			<button class="submit" onclick="updatePass()">Update</button>
 	</div>
 	<div class="col-4"></div>
 </div>

@@ -469,6 +469,13 @@ function loadNetwork()
 }
 
 /**********************************************************************************/
+/*Reboot Settings*/
+function reboot()
+{
+	$.getJSON("reboot?true");
+}
+
+/**********************************************************************************/
 /*System Time Settings*/
 function systemDate()
 {
@@ -665,12 +672,22 @@ function loadHistory()
 /*Admin JS*/
 function updatePass()
 {
-	var currentPass =  document.getElementById("currentPass").value;
+	var currentPass = document.getElementById("currentPassInput").value;
 	var newPass = document.getElementById("newPassInput").value;
 	var confPass = document.getElementById("confirmPassInput").value;
-
-	/*var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass, true);
-	xhttp.send();*/
-	$.getJSON("/admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass);
+	
+	if(currentPass.length < 4 || newPass.length < 4 || confPass.length < 4)
+	{
+		console.log("ERROR");
+		document.getElementById("errormsg").innerHTML = "Passwords must be at least 4 characters long"; 
+	}
+	else if(newPass.localeCompare(confPass) != 0)
+	{
+		console.log("PASS DONT MATCH");
+		document.getElementById("errormsg").innerHTML = "Passwords do not match";
+	}
+	else 
+	{
+		$.getJSON("/admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass);
+	}
 }
