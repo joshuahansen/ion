@@ -469,9 +469,9 @@ function updateNetwork()
 		var pdns = document.getElementById("pdnsInput").value;
 		var sdns = document.getElementById("sdnsInput").value;
 
-		var xhttp = new XMLHttpRequest();
+	/*	var xhttp = new XMLHttpRequest();
 		xhttp.open("GET", "network?ip=" + ip + "&subnet=" + subnet + "&gateway=" + gateway + "&pdns" + pdns + "&sdns=" + sdns, true);
-		xhttp.send();
+		xhttp.send();*/
 		$.getJSON("/network?ip=" + ip + "&subnet=" + subnet + "&gateway=" + gateway + "&pdns" + pdns + "&sdns=" + sdns);
 	return false;
 }
@@ -524,20 +524,17 @@ function updateDate()
 	{	
 		//SEND UPDATE FEQUENCY, SERVER IP, TIME ZONE, AND DAYLIGHT SAVINGS
 		console.log("DEBUG: ntp");
-		/*var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass, true);
-		xhttp.send();*/
-		var unixtime = Date.parse("24-Nov-2009 17:57:35").getTime()/1000
+		
+		$.getJSON("/systemTime?unix=" + unixtime);
 		return false;
 	}
 	else if(radioValue.localeCompare("sysTime") == 0)
 	{
 		//SEND SYSTEM TIME IN UNIX TIMESTAMP
 		console.log("DEBUG: sysTime");
-		/*var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass, true);
-		xhttp.send();*/
-		var unixtime = Date.parse("24 Nov, 2009 17:57:35")/1000;
+		var date = new Date();
+		var unixtime = date.getTime();
+		$.getJSON("/systemTime?unix=" + unixtime);
 		return false;
 	}
 	else if(radioValue.localeCompare("manual") == 0)
@@ -555,6 +552,36 @@ function updateDate()
 	}
 }
 
+/**********************************************************************************/
+/*SNMP Settings*/
+function updateSNMP()
+{
+		var sysName = document.getElementById("snInput").value;
+		var sysContact = document.getElementById("scInput").value;
+		var sysLocation = document.getElementById("slInput").value;
+		var netAgent = document.getElementById("netagentport").value;
+		var trapPort = document.getElementById("trapport").value;
+		var SNMPv3ID = document.getElementById("snmpv3id").value;
+		var SNMPv3 = document.getElementById("snmpv3input").value;
+
+		$.getJSON("/snmp?sysName=" + sysName + "&sysContact=" + sysContact + 
+			"&sysLocation=" + sysLocation + "&netAgent" + netAgent + 
+			"&trapPort=" + trapPort + "&SNMPv3ID" + SNMPv3ID + "&SNMPv3" + SNMPv3);
+	return false;
+}
+
+function loadSNMP()
+{
+	$.getJSON("snmp", function(data) {
+		document.getElementById("snInput").value = data.sysName;
+		document.getElementById("scInput").value = data.sysContact;
+		document.getElementById("slInput").value = data.sysLocation;
+		document.getElementById("netagentport").value = data.netAgent;
+		document.getElementById("trapport").value = data.trapPort;
+		document.getElementById("snmpv3id").value = data.SNMPv3ID;
+		document.getElementById("snmpv3input").value = data.SNMPv3;
+	});
+}
 
 /**********************************************************************************/
 /*History JS*/

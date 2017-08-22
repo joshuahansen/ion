@@ -2,7 +2,7 @@
 	<div class="col-2"></div>
 	<div class="Settings col-8">
 		<h2>SNMP</h2>
-		<form id="snmpform" method="post">
+		<!--		<form id="snmpform" method="post">-->
 			<h4>MIB System</h4>
 			<hr>
 			</br>
@@ -37,8 +37,8 @@
 			<hr>
 			</br>
 			<label>SNMPv3 Engine ID Format Type</label>
-			<select class="textbox" id="snmpv3dd">
-				<option value="mac">MAC Adress</option>
+			<select class="textbox" id="snmpv3id">
+				<option value="MAC">MAC Address</option>
 				<option value="IPv4">IPv4</option>
 				<option value="IPv6">IPv6</option>
 				<option value="manually">Manually</option>
@@ -49,8 +49,8 @@
 			<input type="text" class="textbox" id="snmpv3input">
 			</br>
 			</br>
-			<input type="submit" class="submit" value="Submit">
-		</form>
+			<button type="submit" class="submit" onclick="updateSNMP()">Submit</button>
+			<!--</form>-->
 	</div>
 	<div class="col-2"></div>
 </div>
