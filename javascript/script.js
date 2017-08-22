@@ -106,25 +106,12 @@ function updateCurrentDials()
 				$("#s" + data.sensors[i].port + "value").text("");
 			}
 			//Set all port types
-			if(sensorTypes[data.sensors[i].type].length > 12)
-			{
-				document.getElementById("type"+ data.sensors[i].port + "scroll").scrollAmount = "5";
-			}
 			$("#s"+ data.sensors[i].port + "type").text(sensorTypes[data.sensors[i].type]);
 
 			//Sets name of sensor
 			if(data.sensors[i].name.localeCompare("") != 0)
 			{
-				if(data.sensors[i].name.length > 12)
-				{
-					document.getElementById("port"+ data.sensors[i].port + "scroll").scrollAmount = "5";
-				}
 				$("#s" + data.sensors[i].port + "label").text(data.sensors[i].name);
-			}
-			else
-			{
-				document.getElementById("port"+ data.sensors[i].port + "scroll").scrollAmount = "0";
-				//document.getElementsByClassName("scrollText").scrollAmount = "0";
 			}
 			//Set all port Values
 			$("#s" + data.sensors[i].port + "value").text(data.sensors[i].stringValue);
@@ -303,9 +290,6 @@ function updateThresh()
 	{
 		var max = document.getElementById("maxThreshold").value;
 		$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max);
-		/*var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "?name=" + name + "&maxThresh=" + max, true);
-		xhttp.send();*/
 		document.getElementById("sensorModal").style.display = "none";
 		return false;
 	}
@@ -314,9 +298,6 @@ function updateThresh()
 		var max = document.getElementById("maxThreshold").value;
 		var min = document.getElementById("minThreshold").value;
 		$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max + "&minThresh=" + min);
-		/*var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "?name=" + name + "&maxThresh=" + max + "&minThresh=" + min, true);
-		xhttp.send();*/
 		document.getElementById("sensorModal").style.display = "none";
 		return false;
 	}
@@ -493,15 +474,24 @@ function systemDate()
 {
 	var currentDate = new Date();
 	var formattedDate =  formatDateTime(currentDate.getDate()) + "/" + formatDateTime((currentDate.getMonth() + 1)) + "/" + formatDateTime(currentDate.getFullYear());
-	document.getElementById("systemDate").innerHTML = formattedDate;
+	document.getElementById("systemDate").value = formattedDate;
 }
 function systemTime()
 {
 	var currentTime = new Date();
 	var formattedTime = formatDateTime(currentTime.getHours()) + ":" + formatDateTime(currentTime.getMinutes()) + ":" + formatDateTime(currentTime.getSeconds());
-	document.getElementById("systemTime").innerHTML = formattedTime
+	document.getElementById("systemTime").value = formattedTime
 
 }
+function loadNTP()
+{
+	$.getJSON("ntp", function(data) {
+		document.getElementById("NTPServer").value = data.NTP;
+		document.getElementById("timeZone").value = "GMT" + data.timeZone;
+		document.getElementById("daylightSavings").value = data.daylight;
+	});
+}
+
 function formatDateTime(dateTime)
 {
 	if(dateTime < 10)
@@ -510,10 +500,11 @@ function formatDateTime(dateTime)
 	}
 	return dateTime;
 }
-function loadSystemTime()
+function loadTime()
 {
 	systemDate();
 	systemTime();
+	loadNTP();
 	dataInterval = setInterval(systemTime, 1000);
 }
 function updateDate()
@@ -523,15 +514,25 @@ function updateDate()
 	if(radioValue.localeCompare("ntp") == 0)
 	{	
 		//SEND UPDATE FEQUENCY, SERVER IP, TIME ZONE, AND DAYLIGHT SAVINGS
-		console.log("DEBUG: ntp");
+		var NTP = document.getElementById("NTPServer").value;
+		var timeZone = document.getElementById("timeZone").value;
+		var dayLight = document.getElementById("daylightSavings").value;
+		if(timeZone.localeCompare("GMT") == 0)
+		{
+			timeZone = "0:00";
+		}
+		else
+		{
+			timeZone = timeZone.replace("GMT", "");
+		}
+
 		
-		$.getJSON("/systemTime?unix=" + unixtime);
+		$.getJSON("/systemTime?NTP=" + NTP + "&timeZone=" + timeZone + "&daylight=" + dayLight);
 		return false;
 	}
 	else if(radioValue.localeCompare("sysTime") == 0)
 	{
 		//SEND SYSTEM TIME IN UNIX TIMESTAMP
-		console.log("DEBUG: sysTime");
 		var date = new Date();
 		var unixtime = date.getTime();
 		$.getJSON("/systemTime?unix=" + unixtime);
@@ -540,7 +541,6 @@ function updateDate()
 	else if(radioValue.localeCompare("manual") == 0)
 	{
 		//CONVERT MANUAL INPUT TO UNIX TIMESTAMP
-		console.log("DEBUG: manual");
 		var manDate = new Date(document.getElementById("manualDate").value);
 		var day = manDate.getDate();
 		var month = manDate.getMonth();

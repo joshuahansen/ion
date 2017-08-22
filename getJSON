@@ -1,0 +1,20 @@
+SENSORS	
+$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max);
+$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max + "&minThresh=" + min);
+
+Emails
+$.getJSON("/emails/?email1=" + email1 + "&disable1=" + disable1 + "&email2=" + email2 + "&disable2=" + disable2 + "&email3=" + email3 + "&disable3=" + disable3);
+
+Network
+$.getJSON("/network?ip=" + ip + "&subnet=" + subnet + "&gateway=" + gateway + "&pdns" + pdns + "&sdns=" + sdns);
+
+System Time
+$.getJSON("/systemTime?NTP=" + NTP + "&timeZone=" + timeZone + "&daylight=" + dayLight);
+$.getJSON("/systemTime?unix=" + unixtime);
+$.getJSON("/systemTime?unix=" + unixtime);
+
+SNMP
+$.getJSON("/snmp?sysName=" + sysName + "&sysContact=" + sysContact + 
+
+Admin
+$.getJSON("/admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass);

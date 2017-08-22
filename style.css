@@ -198,6 +198,37 @@ div.navImage {
 	margin: 10px;
 	padding: 10px;
 }
+/*
+.scroll {
+	overflow: hidden;
+	text-overflow: clip;
+	display: inline-block;
+	white-space: nowrap;
+	animation: scrollLabel 5s infinite;
+	animation-timing-function: linear;
+}
+/*Safari 4.0 - 8.0
+.scroll {
+	-webkit-animation: scrollLabel 5s infinite;
+	-webkit-animation-timing-function: linear;
+}
+/*Firefox 
+.scroll {
+	-moz-animation: scrollLabel 5s infinite;
+	-moz-animation-timing-function: linear;
+}
+
+
+@-webkit-keyframes scrollLabel {
+	to {transform: translateX(-100%);}
+}
+@-moz-keyframes scrollLabel {
+	to {transform: translateX(-100%);}
+}
+@keyframes scrollLabel {
+	to {transform: translateX(-100%);}
+}
+*/
 
 /*Admin CSS*/
 /***********************************************************************/

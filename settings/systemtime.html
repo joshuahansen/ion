@@ -6,63 +6,8 @@
 		<div>
 			<h4><input type="radio" name="systemTime" id="ntp" value="ntp">Synchronize with NTP server time</h4>
 			<hr>
-			<label>Time Between Automatic Updates</label>
-			<select class="textbox" id="autoUpdate">
-				<script>
-					var autoUpdate = ["NO", "1 Hour", "3 Hours", "12 Hours", "1 Day", "10 Days", "30 Days"];
-					var select = document.getElementById("autoUpdate");
-					for(var i = 0; i < autoUpdate.length; i++)
-					{
-						var opt = document.createElement("option");
-						opt.value = autoUpdate[i];
-						opt.innerHTML = autoUpdate[i];
-						if(autoUpdate[i].localeCompare("1 Hour") == 0)
-						{
-							opt.selected = "selected";
-						}
-						select.appendChild(opt);
-					}
-				</script>
-			</select>
-			</br>
-			</br>
 			<label>NTP Server</label>
-			<select class="textbox" id="ntpServer">
-				<script>
-					$.getJSON("timeServers", function(data) {
-						success: {
-							var serverSelect = document.getElementById("ntpServer");
-							for(var i = 0; i < data.length; i++)
-							{
-								var opt = document.createElement("option");
-								opt.value = data[i];
-								opt.innerHTML = data[i];
-								serverSelect.appendChild(opt);
-							}
-						}
-					});
-				</script>
-			</select>
-			</br>
-			</br>
-			<label>Add Time Server</label>
-			<input type="text" class="textbox" id="newNTPServer">
-			</br>
-			</br>
-			<button class="textbox" onclick=" return addTimeServer()">Add Time Server</button>
-				<script>
-					function addTimeServer()
-					{
-						var newServer = document.getElementById("newNTPServer");
-						var opt = document.createElement("option");
-						opt.value = newServer.value;
-						opt.innerHTML = newServer.value;
-						opt.selected = "selected";
-						newServer.value = "";
-						document.getElementById("timeServer").appendChild(opt);
-						return false;
-					}
-				</script>
+			<input type="text" class="textbox" id="NTPServer">
 			</br>
 			</br>
 			<label>Time Zone</label>
@@ -100,11 +45,11 @@
 			<h4><input type="radio" name="systemTime" id="sysTime" value="sysTime" checked>Synchronize with System Time</h4>
 			<hr>
 			<label>System Time (hh:mm:ss)</label>
-			<p class="textbox" id="systemTime"></p>
+			<input type="text" class="textbox" id="systemTime" style="border:none; width: 75px" readonly>
 			</br>
 			</br>
 			<label>System Date(dd/mm/yyyy)</label>
-			<p class="textbox" id="systemDate"></p>
+			<input type="text" class="textbox" id="systemDate" style="border:none; width: 75px" readonly>
 		</div>
 		<div>
 			<h4><input type="radio" name="systemTime" id="manualTime" value="manual">Manually Setting</h4>
