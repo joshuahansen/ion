@@ -45,6 +45,10 @@ function setActive(menuId) {
 function loadContent(file, activeMenuId, loadData) {
 	$("#display").load(file, loadData);
 	setActive(document.getElementById(activeMenuId));
+	if(activeMenuId.localeCompare("config") == 0)
+	{
+		setActive(document.getElementById("network"));
+	}
 	if(activeMenuId.localeCompare("info") == 0 || activeMenuId.localeCompare("alerts") == 0 ||
 		activeMenuId.localeCompare("admin") == 0 || activeMenuId.localeCompare("history") == 0)
 	{
