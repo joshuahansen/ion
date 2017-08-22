@@ -2,20 +2,12 @@
 	<div class="Settings " id="">
 		<h2>Reboot</h2>
 		<p>Rebooting the Sensorpod will restart all the sensors. Are you sure you want to reboot?</p>
-		<button id="rebootBut" onclick="location.href='ion/reset?factory'">Confirm Reboot</button>
-	<!--	<script>
-			function sendRequest()
+		<button id="rebootBut" onclick="reboot()">Confirm Reboot</button>
+		<script>
+			function reboot()
 			{
-				console.log("send request");
-				$.ajax({
-					url: "index.html",
-					type: "get",
-					data: {
-						reboot: 1
-					}
-				});
-				console.log("request sent");
+				$.getJSON("reboot?true");
 			}
-	</script>-->
+		</script>
 	</div>
 </div>

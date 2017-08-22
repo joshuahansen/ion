@@ -2,12 +2,19 @@
 	<div class="col-4"></div>
 	<div class="col-4 firmware">
 		<h2>Firmware upgrade</h2>
-		<form action="fileupload" method="post" enctype="multipart/for-data">
+<!--		<form action="fileupload" method="post" enctype="multipart/for-data">-->
 			<input class="fileupload" type="file" name="filetoupload">
 			</br>
 			</br>
-			<input class="fileupload firmwarebutton" type="submit" value="Upgrade Now">
-		</form>
+			<button class="fileupload firmwarebutton" value="Upgrade Now" onclick="upgradeFirmware()">Updrade Now</button>
+<!--			<input class="fileupload firmwarebutton" type="submit" value="Upgrade Now">
+		</form>-->
+		<script>
+			function upgradeFirmware()
+			{	
+				
+			}
+		</script>
 	</div>
 	<div class="col-4"></div>
 </div>
