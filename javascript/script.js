@@ -622,14 +622,14 @@ function loadHistory()
 					data: data[i].data,
 					borderColor: colors[i],
 					fill: false
-					};
+					}
 				switch(type) {
 					case 1:
 						datasetTemp.push(datasetValue);
 						break;
 					case 2:
 						datasetSmoke.push(datasetValue);
-						break;
+					break;
 					case 3:
 						datasetTH.push(datasetValue);
 						break;
@@ -650,8 +650,11 @@ function loadHistory()
 
 			function addDataset(chartID, dataset, chartDiv, hLabels)
 			{
+				var canvas = document.getElementById(chartID);
+				canvas.width = window.innerWidth/4;
+				canvas.height = window.innerHeight/4;
 				var sh = document.getElementById(chartID).getContext('2d');
-				var chart = new Chart(sh, {
+				var chart = new lineChart(canvas, sh, {
 					type: "line",
 					data: {
 						labels: hLabels,
@@ -671,6 +674,90 @@ function loadHistory()
 			}
 			}		
 		});
+}
+function lineChart(canvas, chart, attributes)
+{
+	console.log("CREATE NEW CHART");
+	var padding = 30;
+	/*draw y-axis*/
+	chart.beginPath();
+	chart.moveTo(padding,(canvas.height - padding));
+	chart.lineTo(padding,padding);
+	chart.lineWidth = 3;
+	chart.strokeStyle = "#D3D3D3"
+	chart.stroke();
+	chart.closePath();
+	/*add y-axis values*/
+	var rangeOfValues = attributes.data.datasets.length;
+	console.log(rangeOfValues);
+	var point = 0;
+	var max = 0;
+	for(var i = 0; i < rangeOfValues; ++i)
+	{
+		console.log(attributes.data.datasets[i]);
+		for(var j = 0; j < attributes.data.datasets[i].data.length; ++j)
+		{
+			console.log(attributes.data.datasets[i].data[j]);
+			if(max < attributes.data.datasets[i].data[j])
+			{
+				max = attributes.data.datasets[i].data[j];
+			}
+		}
+		console.log("Max: " + max);
+	}
+	if(max != 1)
+	{
+		max = Math.ceil(max/10);
+		max = max * 10;
+	
+		console.log("NEW MAX = " + max);
+	
+		var pointDist = (canvas.height - (padding * 2))/(max/10);
+		var newPoint = 0;
+		console.log("POINT DISTANCE: " + pointDist);
+		for(var i = 0; i <= (max/10); ++i)
+		{
+			console.log("ADD POINT: " + i*10);
+			chart.beginPath();
+			chart.moveTo(padding - 5, canvas.height - padding - newPoint);
+			chart.lineTo(canvas.width - padding, canvas.height - padding - newPoint);
+			chart.lineWidth = 2;
+			chart.strokeStyle = "#D3D3D3"
+			chart.stroke();
+			chart.closePath();
+			chart.fillText((i * 10), 1, canvas.height - padding - newPoint);
+			newPoint += pointDist;
+		}
+	}
+	else
+	{
+		console.log("ADD POINTS: " + 0);
+		chart.beginPath();
+		chart.moveTo(padding - 5, canvas.height - padding);
+		chart.lineTo(padding, canvas.height - padding);
+		chart.lineWidth = 2;
+		chart.stroke();
+		chart.closePath();
+		chart.fillText(0, 1, canvas.height - padding);
+		console.log("ADD POINTS: " + 0 + " " + max);
+		chart.beginPath();
+		chart.moveTo(padding - 5, padding);
+		chart.lineTo(canvas.width - padding, padding);
+		chart.lineWidth = 2;
+		chart.strokeStyle = "#D3D3D3"
+		chart.stroke();
+		chart.closePath();
+		chart.fillText(max, 1, padding);
+	}
+	/*draw x-axis*/
+	chart.beginPath();
+	chart.moveTo(padding,(canvas.height - padding));
+	chart.lineTo((canvas.width - padding),(canvas.height - padding));
+	chart.lineWidth = 3;
+	chart.strokeStyle = "#D3D3D3"
+	chart.stroke();
+	chart.closePath();
+
 }
 /**********************************************************************************/
 /*Admin JS*/
