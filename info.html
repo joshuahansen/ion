@@ -1,3 +1,135 @@
+<script>
+function setThres(portNum) {
+	$.getJSON("current", function(data) {
+		success: {
+			document.getElementById("portNum").value = portNum + 1;
+			if(data.sensors[portNum].type == 0) 
+			{
+				//do nothing
+			}
+			else if(data.sensors[portNum].type == 4)
+			{
+				//set threshold for door and dry contact sensors
+				document.getElementById("maxThreshold").max = 1;
+				document.getElementById("maxThreshMax").innerHTML = "Closed";
+				document.getElementById("maxThreshMin").innerHTML = "Open";
+
+				document.getElementById("portName").value = data.sensors[portNum].name;
+				//set max threshold for port using current values
+				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
+				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
+				document.getElementById("minThreshRange").style.display = "none";
+				document.getElementById("setThresh").value = 4;
+
+				document.getElementById("sensorModal").style.display = "block";
+			}
+			else if(data.sensors[portNum].type == 6)
+			{
+				//set thresh for contact sensors
+				document.getElementById("maxThreshold").max = 1;
+				document.getElementById("maxThreshMax").innerHTML = "No Contact";
+				document.getElementById("maxThreshMin").innerHTML = "Contact";
+
+				document.getElementById("portName").value = data.sensors[portNum].name;
+				//set max threshold for port using current values
+				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
+				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
+				document.getElementById("minThreshRange").style.display = "none";
+				document.getElementById("setThresh").value = 6;
+
+				document.getElementById("sensorModal").style.display = "block";
+			}
+			else if(data.sensors[portNum].type == 8)
+			{
+				//set thresh for leak rope
+				document.getElementById("maxThreshold").max = 1;
+				document.getElementById("maxThreshMax").innerHTML = "Leak";
+				document.getElementById("maxThreshMin").innerHTML = "No Leak";
+
+				document.getElementById("portName").value = data.sensors[portNum].name;
+				//set max threshold for port using current values
+				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
+				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
+				document.getElementById("minThreshRange").style.display = "none";
+				document.getElementById("setThresh").value = 8;
+
+				document.getElementById("sensorModal").style.display = "block";
+			}
+			else
+			{
+				//set sensors values for teperature sensors
+				document.getElementById("minThreshold").max = 100;
+				document.getElementById("minThreshMax").innerHTML = 100;
+	
+				document.getElementById("maxThreshold").max = 100;
+				document.getElementById("maxThreshMax").innerHTML = 100;
+				document.getElementById("maxThreshMin").innerHTML = 0;
+
+				document.getElementById("portName").value = data.sensors[portNum].name;
+				//set min threshold for port using current values
+				document.getElementById("minThreshold").value = data.sensors[portNum].threshMin;
+				document.getElementById("minValue").value = data.sensors[portNum].threshMin;
+				//set max threshold for port using current values
+				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
+				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
+				document.getElementById("setThresh").value = 1;
+				
+				document.getElementById("minThreshRange").style.display = "block";
+				document.getElementById("sensorModal").style.display = "block";
+			}
+
+		}
+	});
+}
+function updateThresh()
+{
+	var setThreshValue = document.getElementById("setThresh").value;
+	var name = document.getElementById("portName").value;
+	var portNum = document.getElementById("portNum").value;
+	
+	if(setThreshValue == 4 || setThreshValue == 6 || setThreshValue == 8)
+	{
+		var max = document.getElementById("maxThreshold").value;
+		$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max);
+		document.getElementById("sensorModal").style.display = "none";
+		return false;
+	}
+	else 
+	{
+		var max = document.getElementById("maxThreshold").value;
+		var min = document.getElementById("minThreshold").value;
+		$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max + "&minThresh=" + min);
+		document.getElementById("sensorModal").style.display = "none";
+		return false;
+	}
+}
+function showMinValue(value)
+{
+	document.getElementById("minValue").value = value;
+}
+function changeMinRange(value)
+{
+	document.getElementById("minThreshold").value = value;
+}
+function showMaxValue(value)
+{
+	document.getElementById("maxValue").value = value;
+}
+function changeMaxRange(value)
+{
+	document.getElementById("maxThreshold").value = value;
+}
+
+function closeModal() {
+	document.getElementById("sensorModal").style.display = "none";
+}
+
+window.onclick = function(event) {
+	if(event.target == document.getElementById("sensorModal")) {
+		document.getElementById("sensorModal").style.display = "none";
+	}
+}
+</script>
 <div class="row">
 	<div id="sensorModal" class="modal">
 		<div class="modalContent">

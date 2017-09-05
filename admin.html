@@ -1,3 +1,26 @@
+<script>
+function updatePass()
+{
+	var currentPass = document.getElementById("currentPassInput").value;
+	var newPass = document.getElementById("newPassInput").value;
+	var confPass = document.getElementById("confirmPassInput").value;
+	
+	if(currentPass.length < 4 || newPass.length < 4 || confPass.length < 4)
+	{
+		console.log("ERROR");
+		document.getElementById("errormsg").innerHTML = "Passwords must be at least 4 characters long"; 
+	}
+	else if(newPass.localeCompare(confPass) != 0)
+	{
+		console.log("PASS DONT MATCH");
+		document.getElementById("errormsg").innerHTML = "Passwords do not match";
+	}
+	else 
+	{
+		$.getJSON("/admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass);
+	}
+}
+</script>
 <div class="row">
 	<div class= "col-4"></div>
 	<div class="settings col-4" id="">

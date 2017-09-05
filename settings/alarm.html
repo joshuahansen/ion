@@ -1,3 +1,47 @@
+<script>
+function updateEmails()
+{
+	//email 1
+	var email1 = document.getElementById("email1").value;
+	var disable1 = document.getElementById("disableEmail1").checked;
+	if(disable1 == true)
+	{
+		disable1 = 0;
+	}
+	else
+	{
+		disable1 = 1;
+	}
+	//email 2
+	var email2 = document.getElementById("email2").value;
+	var disable2 = document.getElementById("disableEmail2").checked;
+	if(disable2 == true)
+	{
+		disable2 = 0;
+	}
+	else
+	{
+		disable2 = 1;
+	}
+	//email 3
+	var email3 = document.getElementById("email3").value;
+	var disable3 = document.getElementById("disableEmail3").checked;
+	if(disable3 == true)
+	{
+		disable3 = 0;
+	}
+	else
+	{
+		disable3 = 1;
+	}
+	
+	$.getJSON("/emails/?email1=" + email1 + "&disable1=" + disable1 + "&email2=" + email2 + "&disable2=" + disable2 + "&email3=" + email3 + "&disable3=" + disable3);
+/*	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", "emails?email1=" + email1 + "&disable1=" + disable1 + "&email2=" + email2 + "&disable2=" + disable2 + "&email3=" + email3 + "&disable3=" + disable3, true);
+	xhttp.send();*/
+	return false;
+}
+</script>
 <div class="row">
 	<div class="col-2"></div>
 	<div class="col-8">

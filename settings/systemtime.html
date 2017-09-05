@@ -1,3 +1,49 @@
+<script>
+function updateDate()
+{
+	var radioValue = $("input[name='systemTime']:checked").val();
+
+	if(radioValue.localeCompare("ntp") == 0)
+	{	
+		//SEND UPDATE FEQUENCY, SERVER IP, TIME ZONE, AND DAYLIGHT SAVINGS
+		var NTP = document.getElementById("NTPServer").value;
+		var timeZone = document.getElementById("timeZone").value;
+		var dayLight = document.getElementById("daylightSavings").value;
+		if(timeZone.localeCompare("GMT") == 0)
+		{
+			timeZone = "0:00";
+		}
+		else
+		{
+			timeZone = timeZone.replace("GMT", "");
+		}
+
+		
+		$.getJSON("/systemTime?NTP=" + NTP + "&timeZone=" + timeZone + "&daylight=" + dayLight);
+		return false;
+	}
+	else if(radioValue.localeCompare("sysTime") == 0)
+	{
+		//SEND SYSTEM TIME IN UNIX TIMESTAMP
+		var date = new Date();
+		var unixtime = date.getTime();
+		$.getJSON("/systemTime?unix=" + unixtime);
+		return false;
+	}
+	else if(radioValue.localeCompare("manual") == 0)
+	{
+		//CONVERT MANUAL INPUT TO UNIX TIMESTAMP
+		var manDate = new Date(document.getElementById("manualDate").value);
+		var day = manDate.getDate();
+		var month = manDate.getMonth();
+		var year = manDate.getYear();
+		var time = document.getElementById("manualTime").value;
+		var unixtime = Date.parse("15 Aug, 2017 16:00:35")/1000;
+		$.getJSON("/systemTime?unix=" + unixtime);
+		return false;
+	}
+}
+</script>
 <div class="row">
 	<div class="col-2"></div>
 	<div class="Settings col-8">

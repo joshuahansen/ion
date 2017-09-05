@@ -201,136 +201,6 @@ function updateCurrentDials()
 				.trigger('change');
 		}
 	});
-}	
-function setThres(portNum) {
-	$.getJSON("current", function(data) {
-		success: {
-			document.getElementById("portNum").value = portNum + 1;
-			if(data.sensors[portNum].type == 0) 
-			{
-				//do nothing
-			}
-			else if(data.sensors[portNum].type == 4)
-			{
-				//set threshold for door and dry contact sensors
-				document.getElementById("maxThreshold").max = 1;
-				document.getElementById("maxThreshMax").innerHTML = "Closed";
-				document.getElementById("maxThreshMin").innerHTML = "Open";
-
-				document.getElementById("portName").value = data.sensors[portNum].name;
-				//set max threshold for port using current values
-				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
-				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
-				document.getElementById("minThreshRange").style.display = "none";
-				document.getElementById("setThresh").value = 4;
-
-				document.getElementById("sensorModal").style.display = "block";
-			}
-			else if(data.sensors[portNum].type == 6)
-			{
-				//set thresh for contact sensors
-				document.getElementById("maxThreshold").max = 1;
-				document.getElementById("maxThreshMax").innerHTML = "No Contact";
-				document.getElementById("maxThreshMin").innerHTML = "Contact";
-
-				document.getElementById("portName").value = data.sensors[portNum].name;
-				//set max threshold for port using current values
-				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
-				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
-				document.getElementById("minThreshRange").style.display = "none";
-				document.getElementById("setThresh").value = 6;
-
-				document.getElementById("sensorModal").style.display = "block";
-			}
-			else if(data.sensors[portNum].type == 8)
-			{
-				//set thresh for leak rope
-				document.getElementById("maxThreshold").max = 1;
-				document.getElementById("maxThreshMax").innerHTML = "Leak";
-				document.getElementById("maxThreshMin").innerHTML = "No Leak";
-
-				document.getElementById("portName").value = data.sensors[portNum].name;
-				//set max threshold for port using current values
-				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
-				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
-				document.getElementById("minThreshRange").style.display = "none";
-				document.getElementById("setThresh").value = 8;
-
-				document.getElementById("sensorModal").style.display = "block";
-			}
-			else
-			{
-				//set sensors values for teperature sensors
-				document.getElementById("minThreshold").max = 100;
-				document.getElementById("minThreshMax").innerHTML = 100;
-	
-				document.getElementById("maxThreshold").max = 100;
-				document.getElementById("maxThreshMax").innerHTML = 100;
-				document.getElementById("maxThreshMin").innerHTML = 0;
-
-				document.getElementById("portName").value = data.sensors[portNum].name;
-				//set min threshold for port using current values
-				document.getElementById("minThreshold").value = data.sensors[portNum].threshMin;
-				document.getElementById("minValue").value = data.sensors[portNum].threshMin;
-				//set max threshold for port using current values
-				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
-				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
-				document.getElementById("setThresh").value = 1;
-				
-				document.getElementById("minThreshRange").style.display = "block";
-				document.getElementById("sensorModal").style.display = "block";
-			}
-
-		}
-	});
-}
-function updateThresh()
-{
-	var setThreshValue = document.getElementById("setThresh").value;
-	var name = document.getElementById("portName").value;
-	var portNum = document.getElementById("portNum").value;
-	
-	if(setThreshValue == 4 || setThreshValue == 6 || setThreshValue == 8)
-	{
-		var max = document.getElementById("maxThreshold").value;
-		$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max);
-		document.getElementById("sensorModal").style.display = "none";
-		return false;
-	}
-	else 
-	{
-		var max = document.getElementById("maxThreshold").value;
-		var min = document.getElementById("minThreshold").value;
-		$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max + "&minThresh=" + min);
-		document.getElementById("sensorModal").style.display = "none";
-		return false;
-	}
-}
-function showMinValue(value)
-{
-	document.getElementById("minValue").value = value;
-}
-function changeMinRange(value)
-{
-	document.getElementById("minThreshold").value = value;
-}
-function showMaxValue(value)
-{
-	document.getElementById("maxValue").value = value;
-}
-function changeMaxRange(value)
-{
-	document.getElementById("maxThreshold").value = value;
-}
-
-function closeModal() {
-	document.getElementById("sensorModal").style.display = "none";
-}
-
-window.onclick = function(event) {
-	if(event.target == document.getElementById("sensorModal")) {
-		document.getElementById("sensorModal").style.display = "none";
-	}
 }
 /**********************************************************************************/
 /*Alerts JS*/
@@ -401,66 +271,8 @@ function loadEmails()
 		}
 	});
 }
-function updateEmails()
-{
-	//email 1
-	var email1 = document.getElementById("email1").value;
-	var disable1 = document.getElementById("disableEmail1").checked;
-	if(disable1 == true)
-	{
-		disable1 = 0;
-	}
-	else
-	{
-		disable1 = 1;
-	}
-	//email 2
-	var email2 = document.getElementById("email2").value;
-	var disable2 = document.getElementById("disableEmail2").checked;
-	if(disable2 == true)
-	{
-		disable2 = 0;
-	}
-	else
-	{
-		disable2 = 1;
-	}
-	//email 3
-	var email3 = document.getElementById("email3").value;
-	var disable3 = document.getElementById("disableEmail3").checked;
-	if(disable3 == true)
-	{
-		disable3 = 0;
-	}
-	else
-	{
-		disable3 = 1;
-	}
-	
-	$.getJSON("/emails/?email1=" + email1 + "&disable1=" + disable1 + "&email2=" + email2 + "&disable2=" + disable2 + "&email3=" + email3 + "&disable3=" + disable3);
-/*	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "emails?email1=" + email1 + "&disable1=" + disable1 + "&email2=" + email2 + "&disable2=" + disable2 + "&email3=" + email3 + "&disable3=" + disable3, true);
-	xhttp.send();*/
-	return false;
-}
-
 /**********************************************************************************/
 /*Network Settings*/
-function updateNetwork()
-{
-		var ip = document.getElementById("ipInput").value;
-		var subnet = document.getElementById("subnetInput").value;
-		var gateway = document.getElementById("gatewayInput").value;
-		var pdns = document.getElementById("pdnsInput").value;
-		var sdns = document.getElementById("sdnsInput").value;
-
-	/*	var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "network?ip=" + ip + "&subnet=" + subnet + "&gateway=" + gateway + "&pdns" + pdns + "&sdns=" + sdns, true);
-		xhttp.send();*/
-		$.getJSON("/network?ip=" + ip + "&subnet=" + subnet + "&gateway=" + gateway + "&pdns" + pdns + "&sdns=" + sdns);
-	return false;
-}
-
 function loadNetwork()
 {
 	$.getJSON("network", function(data) {
@@ -470,13 +282,6 @@ function loadNetwork()
 		document.getElementById("pdnsInput").value = data.pdns;
 		document.getElementById("sdnsInput").value = data.sdns;
 	});
-}
-
-/**********************************************************************************/
-/*Reboot Settings*/
-function reboot()
-{
-	$.getJSON("reboot?true");
 }
 
 /**********************************************************************************/
@@ -518,69 +323,8 @@ function loadTime()
 	loadNTP();
 	dataInterval = setInterval(systemTime, 1000);
 }
-function updateDate()
-{
-	var radioValue = $("input[name='systemTime']:checked").val();
-
-	if(radioValue.localeCompare("ntp") == 0)
-	{	
-		//SEND UPDATE FEQUENCY, SERVER IP, TIME ZONE, AND DAYLIGHT SAVINGS
-		var NTP = document.getElementById("NTPServer").value;
-		var timeZone = document.getElementById("timeZone").value;
-		var dayLight = document.getElementById("daylightSavings").value;
-		if(timeZone.localeCompare("GMT") == 0)
-		{
-			timeZone = "0:00";
-		}
-		else
-		{
-			timeZone = timeZone.replace("GMT", "");
-		}
-
-		
-		$.getJSON("/systemTime?NTP=" + NTP + "&timeZone=" + timeZone + "&daylight=" + dayLight);
-		return false;
-	}
-	else if(radioValue.localeCompare("sysTime") == 0)
-	{
-		//SEND SYSTEM TIME IN UNIX TIMESTAMP
-		var date = new Date();
-		var unixtime = date.getTime();
-		$.getJSON("/systemTime?unix=" + unixtime);
-		return false;
-	}
-	else if(radioValue.localeCompare("manual") == 0)
-	{
-		//CONVERT MANUAL INPUT TO UNIX TIMESTAMP
-		var manDate = new Date(document.getElementById("manualDate").value);
-		var day = manDate.getDate();
-		var month = manDate.getMonth();
-		var year = manDate.getYear();
-		var time = document.getElementById("manualTime").value;
-		var unixtime = Date.parse("15 Aug, 2017 16:00:35")/1000;
-		$.getJSON("/systemTime?unix=" + unixtime);
-		return false;
-	}
-}
-
 /**********************************************************************************/
 /*SNMP Settings*/
-function updateSNMP()
-{
-		var sysName = document.getElementById("snInput").value;
-		var sysContact = document.getElementById("scInput").value;
-		var sysLocation = document.getElementById("slInput").value;
-		var netAgent = document.getElementById("netagentport").value;
-		var trapPort = document.getElementById("trapport").value;
-		var SNMPv3ID = document.getElementById("snmpv3id").value;
-		var SNMPv3 = document.getElementById("snmpv3input").value;
-
-		$.getJSON("/snmp?sysName=" + sysName + "&sysContact=" + sysContact + 
-			"&sysLocation=" + sysLocation + "&netAgent" + netAgent + 
-			"&trapPort=" + trapPort + "&SNMPv3ID" + SNMPv3ID + "&SNMPv3" + SNMPv3);
-	return false;
-}
-
 function loadSNMP()
 {
 	$.getJSON("snmp", function(data) {
@@ -598,7 +342,7 @@ function loadSNMP()
 /*History JS*/
 function loadHistory()
 {
-	var colors = ["green", "blue", "red", "pink", "black", "orange", "grey", "purple", "aqua", "maroon", "violet", "lime"];
+	var colors = ["green", "blue", "red", "pink", "black", "orange", "grey", "yellow", "aqua", "maroon", "violet", "lime"];
 	var chartID = ["tempHistory", "smokeHistory", "thHistory", "doorHistory", "vibrHistory", "dryHistory", "voltHistory"];
 	var chartDiv = ["tempDiv", "smokeDiv", "thDiv", "doorDiv", "vibrDiv", "dryDiv", "voltDiv"];
 	var hLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
@@ -651,8 +395,16 @@ function loadHistory()
 			function addDataset(chartID, dataset, chartDiv, hLabels)
 			{
 				var canvas = document.getElementById(chartID);
-				canvas.width = window.innerWidth/4;
-				canvas.height = window.innerHeight/2.5;
+				if(window.innerWidth > 1000)
+				{
+					canvas.width = window.innerWidth/3.3;
+					canvas.height = window.innerHeight/2.8;
+				}
+				else
+				{
+					canvas.width = window.innerWidth/1.2;
+					canvas.height = window.innerHeight/2;
+				}
 				var sh = document.getElementById(chartID).getContext('2d');
 				var chart = new lineChart(canvas, sh, {
 					type: "line",
@@ -667,11 +419,15 @@ function loadHistory()
 					document.getElementById(chartDiv).style.display = "none";
 				}
 			}
-			
-			for(var count = 0; count < 7; count++)
+			function drawCharts()
 			{
-				addDataset(chartID[count], datasets[count], chartDiv[count], hLabels);
+				for(var count = 0; count < 7; count++)
+				{
+					addDataset(chartID[count], datasets[count], chartDiv[count], hLabels);
+				}
 			}
+			window.addEventListener('resize', drawCharts, false);
+			drawCharts();
 			}		
 		});
 }
@@ -713,7 +469,7 @@ function lineChart(canvas, chart, attributes)
 			chart.beginPath();
 			chart.moveTo(padding - 5, chartStart - newPoint);
 			chart.lineTo(canvas.width - padding, chartStart - newPoint);
-			chart.lineWidth = 2;
+			chart.lineWidth = 1;
 			chart.strokeStyle = "#D3D3D3"
 			chart.stroke();
 			chart.closePath();
@@ -726,14 +482,14 @@ function lineChart(canvas, chart, attributes)
 		chart.beginPath();
 		chart.moveTo(padding - 5, chartStart);
 		chart.lineTo(padding, chartStart);
-		chart.lineWidth = 2;
+		chart.lineWidth = 1;
 		chart.stroke();
 		chart.closePath();
 		chart.fillText(0, 1, chartStart);
 		chart.beginPath();
 		chart.moveTo(padding - 5, padding);
 		chart.lineTo(canvas.width - padding, padding);
-		chart.lineWidth = 2;
+		chart.lineWidth = 1;
 		chart.strokeStyle = "#D3D3D3"
 		chart.stroke();
 		chart.closePath();
@@ -755,20 +511,41 @@ function lineChart(canvas, chart, attributes)
 	var axisDash = padding - 5;
 	for(var i = 0; i < labels.length; ++i)
 	{
-	/*	chart.beginPath();
+		chart.beginPath();
 		chart.moveTo((padding + newPoint), (canvas.height - axisDash));
-		chart.lineTo((padding + newPoint), chartStart);
-		console.log("STARTING POINT: " + (canvas.height - axisDash));
-		console.log("ENDING POINT: " + chartStart);
-		chart.lineWidth = 2;
+		chart.lineTo((padding + newPoint), padding);
+		chart.lineWidth = 1;
 		chart.strokeStyle = "#D3D3D3";
-		chart.stroke;
-		chart.closePath();*/
+		chart.stroke();
+		chart.closePath();
 		chart.fillText(labels[i], padding + newPoint, canvas.height - axisLabel);
 		newPoint += spacing;
 	}
+	/*add port labels*/
+	var labelYPos = 15;
+//	var rangeOfValues = attributes.data.datasets.length;
+	newPoint = 0;
+	lineLength = spacing * 0.7;
+	for(var i = 0; i < rangeOfValues; ++i)
+	{
+		if(i > (labels.length - 1))
+		{
+			labelYPos = labelYPos + 15;
+		}
+		chart.font = "15px Arial";
+		chart.fillText(attributes.data.datasets[i].label, padding + newPoint, labelYPos);
+		chart.beginPath();
+		chart.moveTo(padding + newPoint, labelYPos + 5);
+		chart.lineTo(padding + newPoint + lineLength , labelYPos + 5);
+		chart.lineWidth = 5;
+		chart.strokeStyle = attributes.data.datasets[i].borderColor;
+		chart.stroke();
+		chart.closePath();
+		newPoint += spacing;
+	}
+
 	/*add data*/
-	var rangeOfValues = attributes.data.datasets.length;
+//	var rangeOfValues = attributes.data.datasets.length;
 	for(var i = 0; i < rangeOfValues; ++i)
 	{
 		newPoint = 0;
@@ -786,6 +563,7 @@ function lineChart(canvas, chart, attributes)
 			chart.moveTo(padding + newPoint, chartStart - currentPoint);
 			newPoint += spacing;
 			chart.lineTo(padding + newPoint, chartStart - nextPoint);
+			chart.lineWidth = 3;
 			chart.strokeStyle = attributes.data.datasets[i].borderColor;
 			chart.stroke();
 			chart.closePath();
@@ -795,24 +573,3 @@ function lineChart(canvas, chart, attributes)
 }
 /**********************************************************************************/
 /*Admin JS*/
-function updatePass()
-{
-	var currentPass = document.getElementById("currentPassInput").value;
-	var newPass = document.getElementById("newPassInput").value;
-	var confPass = document.getElementById("confirmPassInput").value;
-	
-	if(currentPass.length < 4 || newPass.length < 4 || confPass.length < 4)
-	{
-		console.log("ERROR");
-		document.getElementById("errormsg").innerHTML = "Passwords must be at least 4 characters long"; 
-	}
-	else if(newPass.localeCompare(confPass) != 0)
-	{
-		console.log("PASS DONT MATCH");
-		document.getElementById("errormsg").innerHTML = "Passwords do not match";
-	}
-	else 
-	{
-		$.getJSON("/admin?currentPass=" + currentPass + "&newPass=" + newPass + "&confPass=" + confPass);
-	}
-}

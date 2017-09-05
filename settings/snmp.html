@@ -1,8 +1,24 @@
+<script>
+function updateSNMP()
+{
+		var sysName = document.getElementById("snInput").value;
+		var sysContact = document.getElementById("scInput").value;
+		var sysLocation = document.getElementById("slInput").value;
+		var netAgent = document.getElementById("netagentport").value;
+		var trapPort = document.getElementById("trapport").value;
+		var SNMPv3ID = document.getElementById("snmpv3id").value;
+		var SNMPv3 = document.getElementById("snmpv3input").value;
+
+		$.getJSON("/snmp?sysName=" + sysName + "&sysContact=" + sysContact + 
+			"&sysLocation=" + sysLocation + "&netAgent" + netAgent + 
+			"&trapPort=" + trapPort + "&SNMPv3ID" + SNMPv3ID + "&SNMPv3" + SNMPv3);
+	return false;
+}
+</script>
 <div class="row">
 	<div class="col-2"></div>
 	<div class="Settings col-8">
 		<h2>SNMP</h2>
-		<!--		<form id="snmpform" method="post">-->
 			<h4>MIB System</h4>
 			<hr>
 			</br>
@@ -50,7 +66,6 @@
 			</br>
 			</br>
 			<button type="submit" class="submit" onclick="updateSNMP()">Submit</button>
-			<!--</form>-->
 	</div>
 	<div class="col-2"></div>
 </div>
