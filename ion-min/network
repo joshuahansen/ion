@@ -1,7 +1,0 @@
-{
-	"ip": "192.168.0.1",
-	"subnet": "255.0.0.0",
-	"gateway": "223.221.24.2",
-	"pdns": "dns.server1",
-	"sdns": "dns.server2"
-}

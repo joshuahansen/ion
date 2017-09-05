@@ -1,5 +1,0 @@
-{
-	"NTP": "NTP-example.server",
-	"timeZone": "+2:00",
-	"daylight": "NO"
-}

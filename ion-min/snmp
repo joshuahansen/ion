@@ -1,9 +1,0 @@
-{
-	"sysName": "SensorPod",
-	"sysContact": "",
-	"sysLocation": "",
-	"netAgent": "",
-	"trapPort": "",
-	"SNMPv3ID": "MAC",
-	"SNMPv3": ""
-}
