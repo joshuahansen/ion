@@ -629,7 +629,7 @@ function loadHistory()
 						break;
 					case 2:
 						datasetSmoke.push(datasetValue);
-					break;
+						break;
 					case 3:
 						datasetTH.push(datasetValue);
 						break;
@@ -652,7 +652,7 @@ function loadHistory()
 			{
 				var canvas = document.getElementById(chartID);
 				canvas.width = window.innerWidth/4;
-				canvas.height = window.innerHeight/4;
+				canvas.height = window.innerHeight/2.5;
 				var sh = document.getElementById(chartID).getContext('2d');
 				var chart = new lineChart(canvas, sh, {
 					type: "line",
@@ -677,11 +677,11 @@ function loadHistory()
 }
 function lineChart(canvas, chart, attributes)
 {
-	console.log("CREATE NEW CHART");
 	var padding = 30;
+	var chartStart = canvas.height - padding;
 	/*draw y-axis*/
 	chart.beginPath();
-	chart.moveTo(padding,(canvas.height - padding));
+	chart.moveTo(padding, chartStart);
 	chart.lineTo(padding,padding);
 	chart.lineWidth = 3;
 	chart.strokeStyle = "#D3D3D3"
@@ -689,57 +689,47 @@ function lineChart(canvas, chart, attributes)
 	chart.closePath();
 	/*add y-axis values*/
 	var rangeOfValues = attributes.data.datasets.length;
-	console.log(rangeOfValues);
 	var point = 0;
 	var max = 0;
 	for(var i = 0; i < rangeOfValues; ++i)
 	{
-		console.log(attributes.data.datasets[i]);
 		for(var j = 0; j < attributes.data.datasets[i].data.length; ++j)
 		{
-			console.log(attributes.data.datasets[i].data[j]);
 			if(max < attributes.data.datasets[i].data[j])
 			{
 				max = attributes.data.datasets[i].data[j];
 			}
 		}
-		console.log("Max: " + max);
 	}
 	if(max != 1)
 	{
 		max = Math.ceil(max/10);
 		max = max * 10;
 	
-		console.log("NEW MAX = " + max);
-	
 		var pointDist = (canvas.height - (padding * 2))/(max/10);
 		var newPoint = 0;
-		console.log("POINT DISTANCE: " + pointDist);
 		for(var i = 0; i <= (max/10); ++i)
 		{
-			console.log("ADD POINT: " + i*10);
 			chart.beginPath();
-			chart.moveTo(padding - 5, canvas.height - padding - newPoint);
-			chart.lineTo(canvas.width - padding, canvas.height - padding - newPoint);
+			chart.moveTo(padding - 5, chartStart - newPoint);
+			chart.lineTo(canvas.width - padding, chartStart - newPoint);
 			chart.lineWidth = 2;
 			chart.strokeStyle = "#D3D3D3"
 			chart.stroke();
 			chart.closePath();
-			chart.fillText((i * 10), 1, canvas.height - padding - newPoint);
+			chart.fillText((i * 10), 1, chartStart - newPoint);
 			newPoint += pointDist;
 		}
 	}
 	else
 	{
-		console.log("ADD POINTS: " + 0);
 		chart.beginPath();
-		chart.moveTo(padding - 5, canvas.height - padding);
-		chart.lineTo(padding, canvas.height - padding);
+		chart.moveTo(padding - 5, chartStart);
+		chart.lineTo(padding, chartStart);
 		chart.lineWidth = 2;
 		chart.stroke();
 		chart.closePath();
-		chart.fillText(0, 1, canvas.height - padding);
-		console.log("ADD POINTS: " + 0 + " " + max);
+		chart.fillText(0, 1, chartStart);
 		chart.beginPath();
 		chart.moveTo(padding - 5, padding);
 		chart.lineTo(canvas.width - padding, padding);
@@ -751,12 +741,56 @@ function lineChart(canvas, chart, attributes)
 	}
 	/*draw x-axis*/
 	chart.beginPath();
-	chart.moveTo(padding,(canvas.height - padding));
-	chart.lineTo((canvas.width - padding),(canvas.height - padding));
+	chart.moveTo(padding, chartStart);
+	chart.lineTo((canvas.width - padding), chartStart);
 	chart.lineWidth = 3;
 	chart.strokeStyle = "#D3D3D3"
 	chart.stroke();
 	chart.closePath();
+	/*add x-axis values*/
+	var labels = attributes.data.labels;
+	var spacing = (canvas.width - (padding  * 2)) / (labels.length - 1);
+	var newPoint = 0;
+	var axisLabel = padding - 15;
+	var axisDash = padding - 5;
+	for(var i = 0; i < labels.length; ++i)
+	{
+	/*	chart.beginPath();
+		chart.moveTo((padding + newPoint), (canvas.height - axisDash));
+		chart.lineTo((padding + newPoint), chartStart);
+		console.log("STARTING POINT: " + (canvas.height - axisDash));
+		console.log("ENDING POINT: " + chartStart);
+		chart.lineWidth = 2;
+		chart.strokeStyle = "#D3D3D3";
+		chart.stroke;
+		chart.closePath();*/
+		chart.fillText(labels[i], padding + newPoint, canvas.height - axisLabel);
+		newPoint += spacing;
+	}
+	/*add data*/
+	var rangeOfValues = attributes.data.datasets.length;
+	for(var i = 0; i < rangeOfValues; ++i)
+	{
+		newPoint = 0;
+		for(var j = 0; j < attributes.data.datasets[i].data.length; ++j)
+		{
+			var currentPoint = attributes.data.datasets[i].data[j];
+			currentPoint = currentPoint/max;
+			currentPoint = currentPoint * (canvas.height - (padding * 2));
+			
+			var nextPoint = attributes.data.datasets[i].data[j+1];
+			nextPoint = nextPoint/max;
+			nextPoint = nextPoint * (canvas.height - (padding * 2));
+			
+			chart.beginPath();
+			chart.moveTo(padding + newPoint, chartStart - currentPoint);
+			newPoint += spacing;
+			chart.lineTo(padding + newPoint, chartStart - nextPoint);
+			chart.strokeStyle = attributes.data.datasets[i].borderColor;
+			chart.stroke();
+			chart.closePath();
+		}
+	}
 
 }
 /**********************************************************************************/
