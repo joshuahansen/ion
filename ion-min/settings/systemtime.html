@@ -1,4 +1,3 @@
-<script>/*<![CDATA[*/function updateDate(){var d=$("input[name='systemTime']:checked").val();if(d.localeCompare("ntp")==0){var b=document.getElementById("NTPServer").value;var k=document.getElementById("timeZone").value;var j=document.getElementById("daylightSavings").value;if(k.localeCompare("GMT")==0){k="0:00"}else{k=k.replace("GMT","")}$.getJSON("/systemTime?NTP="+b+"&timeZone="+k+"&daylight="+j);return false}else{if(d.localeCompare("sysTime")==0){var c=new Date();var f=c.getTime();$.getJSON("/systemTime?unix="+f);return false}else{if(d.localeCompare("manual")==0){var l=new Date(document.getElementById("manualDate").value);var h=l.getDate();var e=l.getMonth();var g=l.getYear();var a=document.getElementById("manualTime").value;var f=Date.parse("15 Aug, 2017 16:00:35")/1000;$.getJSON("/systemTime?unix="+f);return false}}}}/*]]>*/</script>
 <div class="row">
 <div class="col-2"></div>
 <div class="Settings col-8">
