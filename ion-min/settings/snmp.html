@@ -1,0 +1,53 @@
+<script>/*<![CDATA[*/function updateSNMP(){var b=document.getElementById("snInput").value;var g=document.getElementById("scInput").value;var f=document.getElementById("slInput").value;var e=document.getElementById("netagentport").value;var c=document.getElementById("trapport").value;var a=document.getElementById("snmpv3id").value;var d=document.getElementById("snmpv3input").value;$.getJSON("/snmp?sysName="+b+"&sysContact="+g+"&sysLocation="+f+"&netAgent"+e+"&trapPort="+c+"&SNMPv3ID"+a+"&SNMPv3"+d);return false};/*]]>*/</script>
+<div class="row">
+<div class="col-2"></div>
+<div class="Settings col-8">
+<h2>SNMP</h2>
+<h4>MIB System</h4>
+<hr>
+</br>
+<label>System Name</label>
+<input type="text" class="textbox" id="snInput">
+</br>
+</br>
+<label>System Contact</label>
+<input type="text" class="textbox" id="scInput">
+</br>
+</br>
+<label>System Location</label>
+<input type="text" class="textbox" id="slInput">
+</br>
+</br>
+</br>
+<h4>SNMP UDP Port</h4>
+<hr>
+</br>
+<label>NetAgent SNMP Port</label>
+<input type="text" class="textbox" id="netagentport">
+</br>
+</br>
+<label>Trap Receive Port</label>
+<input type="text" class="textbox" id="trapport">
+</br>
+</br>
+</br>
+<h4>SNMPv3 Engine ID</h4>
+<hr>
+</br>
+<label>SNMPv3 Engine ID Format Type</label>
+<select class="textbox" id="snmpv3id">
+<option value="MAC">MAC Address</option>
+<option value="IPv4">IPv4</option>
+<option value="IPv6">IPv6</option>
+<option value="manually">Manually</option>
+</select>
+</br>
+</br>
+<label>SNMPv3 Engine ID Text</label>
+<input type="text" class="textbox" id="snmpv3input">
+</br>
+</br>
+<button type="submit" class="submit" onclick="updateSNMP()">Submit</button>
+</div>
+<div class="col-2"></div>
+</div>

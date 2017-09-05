@@ -1,0 +1,27 @@
+<script>function updatePass(){var c=document.getElementById("currentPassInput").value;var b=document.getElementById("newPassInput").value;var a=document.getElementById("confirmPassInput").value;if(c.length<4||b.length<4||a.length<4){console.log("ERROR");document.getElementById("errormsg").innerHTML="Passwords must be at least 4 characters long"}else{if(b.localeCompare(a)!=0){console.log("PASS DONT MATCH");document.getElementById("errormsg").innerHTML="Passwords do not match"}else{$.getJSON("/admin?currentPass="+c+"&newPass="+b+"&confPass="+a)}}};</script>
+<div class="row">
+<div class="col-4"></div>
+<div class="settings col-4" id="">
+<h2>Administrator</h2>
+<label id="username" class="adminLabel"> User Name:</label>
+<input type="text" class="textbox" value="admin" readonly>
+</br>
+</br>
+<label id="currentPass" class="adminLabel">Current Password:</label>
+<input type="password" class="textbox" id="currentPassInput">
+</br>
+</br>
+</br>
+<label id="newPass" class="adminLabel">New Password:</label>
+<input type="password" class="textbox" id="newPassInput">
+</br>
+</br>
+<label id="confirmPass" class="adminLabel">Confirm Password:</label>
+<input type="password" class="textbox" id="confirmPassInput">
+</br>
+</br>
+<p id="errormsg" style="color:red"></p>
+<button class="submit" onclick="updatePass()">Update</button>
+</div>
+<div class="col-4"></div>
+</div>
