@@ -1,285 +1,152 @@
-<script>
-function setThres(portNum) {
-	$.getJSON("current", function(data) {
-		success: {
-			document.getElementById("portNum").value = portNum + 1;
-			if(data.sensors[portNum].type == 0) 
-			{
-				//do nothing
-			}
-			else if(data.sensors[portNum].type == 4)
-			{
-				//set threshold for door and dry contact sensors
-				document.getElementById("maxThreshold").max = 1;
-				document.getElementById("maxThreshMax").innerHTML = "Closed";
-				document.getElementById("maxThreshMin").innerHTML = "Open";
-
-				document.getElementById("portName").value = data.sensors[portNum].name;
-				//set max threshold for port using current values
-				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
-				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
-				document.getElementById("minThreshRange").style.display = "none";
-				document.getElementById("setThresh").value = 4;
-
-				document.getElementById("sensorModal").style.display = "block";
-			}
-			else if(data.sensors[portNum].type == 6)
-			{
-				//set thresh for contact sensors
-				document.getElementById("maxThreshold").max = 1;
-				document.getElementById("maxThreshMax").innerHTML = "No Contact";
-				document.getElementById("maxThreshMin").innerHTML = "Contact";
-
-				document.getElementById("portName").value = data.sensors[portNum].name;
-				//set max threshold for port using current values
-				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
-				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
-				document.getElementById("minThreshRange").style.display = "none";
-				document.getElementById("setThresh").value = 6;
-
-				document.getElementById("sensorModal").style.display = "block";
-			}
-			else if(data.sensors[portNum].type == 8)
-			{
-				//set thresh for leak rope
-				document.getElementById("maxThreshold").max = 1;
-				document.getElementById("maxThreshMax").innerHTML = "Leak";
-				document.getElementById("maxThreshMin").innerHTML = "No Leak";
-
-				document.getElementById("portName").value = data.sensors[portNum].name;
-				//set max threshold for port using current values
-				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
-				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
-				document.getElementById("minThreshRange").style.display = "none";
-				document.getElementById("setThresh").value = 8;
-
-				document.getElementById("sensorModal").style.display = "block";
-			}
-			else
-			{
-				//set sensors values for teperature sensors
-				document.getElementById("minThreshold").max = 100;
-				document.getElementById("minThreshMax").innerHTML = 100;
-	
-				document.getElementById("maxThreshold").max = 100;
-				document.getElementById("maxThreshMax").innerHTML = 100;
-				document.getElementById("maxThreshMin").innerHTML = 0;
-
-				document.getElementById("portName").value = data.sensors[portNum].name;
-				//set min threshold for port using current values
-				document.getElementById("minThreshold").value = data.sensors[portNum].threshMin;
-				document.getElementById("minValue").value = data.sensors[portNum].threshMin;
-				//set max threshold for port using current values
-				document.getElementById("maxValue").value = data.sensors[portNum].threshMax;
-				document.getElementById("maxThreshold").value = data.sensors[portNum].threshMax;
-				document.getElementById("setThresh").value = 1;
-				
-				document.getElementById("minThreshRange").style.display = "block";
-				document.getElementById("sensorModal").style.display = "block";
-			}
-
-		}
-	});
-}
-function updateThresh()
-{
-	var setThreshValue = document.getElementById("setThresh").value;
-	var name = document.getElementById("portName").value;
-	var portNum = document.getElementById("portNum").value;
-	
-	if(setThreshValue == 4 || setThreshValue == 6 || setThreshValue == 8)
-	{
-		var max = document.getElementById("maxThreshold").value;
-		$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max);
-		document.getElementById("sensorModal").style.display = "none";
-		return false;
-	}
-	else 
-	{
-		var max = document.getElementById("maxThreshold").value;
-		var min = document.getElementById("minThreshold").value;
-		$.getJSON("/sensors/port" + portNum + "/?name=" + name + "&maxThresh=" + max + "&minThresh=" + min);
-		document.getElementById("sensorModal").style.display = "none";
-		return false;
-	}
-}
-function showMinValue(value)
-{
-	document.getElementById("minValue").value = value;
-}
-function changeMinRange(value)
-{
-	document.getElementById("minThreshold").value = value;
-}
-function showMaxValue(value)
-{
-	document.getElementById("maxValue").value = value;
-}
-function changeMaxRange(value)
-{
-	document.getElementById("maxThreshold").value = value;
-}
-
-function closeModal() {
-	document.getElementById("sensorModal").style.display = "none";
-}
-
-window.onclick = function(event) {
-	if(event.target == document.getElementById("sensorModal")) {
-		document.getElementById("sensorModal").style.display = "none";
-	}
-}
-</script>
 <div class="row">
-	<div id="sensorModal" class="modal">
-		<div class="modalContent">
-			<span class="close" onclick="closeModal()">&times;</span>
-			<h2 id="modalHeading">Set Thresholds</h2>
-			<label style="font-size: 25px; position: relative; left: 35%">Name:</label>
-			<input type="text" value="Sensor" id="portName" size="30" style="font-size: 20px; position: relative; left: 35%">
-			<label id="portNum" value="" hidden></label>
-			<div class="row">
-				<div class="col-1"></div>
-				<div class="col-10">
-					<label class="rangeLabel">Max Threshold</label>
-					</br>
-					<label class="rangeBar">
-						<span id="maxThreshMin">0</span>
-						<input type="range" min="0" max="100" class="thresholdRange" id="maxThreshold" oninput="showMaxValue(this.value)" value="50"/>
-						<span id="maxThreshMax">100</span></label>
-					</br>
-					<input type="text" value="50" class="rangeValue" id="maxValue" oninput="changeMaxRange(this.value)"/>
-					</br>
-					</br>
-					<div id="minThreshRange">
-						<label class="rangeLabel">Min Threshold</label>
-						</br>
-						<label class="rangeBar">
-							<span id="minThreshMin">0</span>
-							<input type="range" min="0" max="100" class="thresholdRange" id="minThreshold" oninput="showMinValue(this.value)" value="20"/>
-							<span id=minThreshMax>100</span></label>
-						</br>
-						<input type="text" value="20" class="rangeValue" id="minValue" oninput="changeMinRange(this.value)"/>
-						</br>
-					</div>
-					</br>
-					<button type="submit" class="submit" id="setThresh" value="Set Threshold" onclick="updateThresh()">Set Threshold</button>
-				</div>
-				<div class="col-1"></div>
-			</div>
-
-		</div>
-	</div>
-	<div class="sensors col-3" id="s1" onclick="setThres(0)">
-		<span id="s1label" class="label">Port 1</span>
-		</br>
-		<input type="text" id="port1" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s1value" class="label"></span>
-		</br>
-		<span id="s1type" class="label"></span>
-        </div>
-	<div class="sensors col-3" id="s2" onclick="setThres(1)">
-		<span id="s2label"class="label">Port 2</span>
-		</br>
-		<input type="text" id="port2" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s2value"></span>
-		</br>
-		<span id="s2type"></span>
-	</div>
-	<div class="sensors col-3" id="s3" onclick="setThres(2)">
-		<span id="s3label"class="label">Port 3</span>
-		</br>
-		<input type="text" id="port3" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s3value" ></span>
-		</br>
-		<span id="s3type"></span>
-	</div>
-	<div class="sensors col-3" id="s4" onclick="setThres(3)">
-		<span id="s4label"class="label">Port 4</span>
-		</br>
-		<input type="text" id="port4" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s4value" ></span>
-		</br>
-		<span id="s4type"></span>
-	</div>
+<div id="sensorModal" class="modal">
+<div class="modalContent">
+<span class="close" onclick="closeModal()">&times;</span>
+<h2 id="modalHeading">Set Thresholds</h2>
+<label style="font-size:25px;position:relative;left:35%">Name:</label>
+<input type="text" value="Sensor" id="portName" size="30" style="font-size:20px;position:relative;left:35%">
+<label id="portNum" value="" hidden></label>
+<div class="row">
+<div class="col-1"></div>
+<div class="col-10">
+<label class="rangeLabel">Max Threshold</label>
+</br>
+<label class="rangeBar">
+<span id="maxThreshMin">0</span>
+<input type="range" min="0" max="100" class="thresholdRange" id="maxThreshold" oninput="showMaxValue(this.value)" value="50"/>
+<span id="maxThreshMax">100</span></label>
+</br>
+<input type="text" value="50" class="rangeValue" id="maxValue" oninput="changeMaxRange(this.value)"/>
+</br>
+</br>
+<div id="minThreshRange">
+<label class="rangeLabel">Min Threshold</label>
+</br>
+<label class="rangeBar">
+<span id="minThreshMin">0</span>
+<input type="range" min="0" max="100" class="thresholdRange" id="minThreshold" oninput="showMinValue(this.value)" value="20"/>
+<span id=minThreshMax>100</span></label>
+</br>
+<input type="text" value="20" class="rangeValue" id="minValue" oninput="changeMinRange(this.value)"/>
+</br>
+</div>
+</br>
+<button type="submit" class="submit" id="setThresh" value="Set Threshold" onclick="updateThresh()">Set Threshold</button>
+</div>
+<div class="col-1"></div>
+</div>
+</div>
+</div>
+<div class="sensors col-3" id="s1" onclick="setThres(0)">
+<span id="s1label" class="label">Port 1</span>
+</br>
+<input type="text" id="port1" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s1value" class="label"></span>
+</br>
+<span id="s1type" class="label"></span>
+</div>
+<div class="sensors col-3" id="s2" onclick="setThres(1)">
+<span id="s2label"class="label">Port 2</span>
+</br>
+<input type="text" id="port2" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s2value"></span>
+</br>
+<span id="s2type"></span>
+</div>
+<div class="sensors col-3" id="s3" onclick="setThres(2)">
+<span id="s3label"class="label">Port 3</span>
+</br>
+<input type="text" id="port3" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s3value"></span>
+</br>
+<span id="s3type"></span>
+</div>
+<div class="sensors col-3" id="s4" onclick="setThres(3)">
+<span id="s4label"class="label">Port 4</span>
+</br>
+<input type="text" id="port4" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s4value"></span>
+</br>
+<span id="s4type"></span>
+</div>
 </div>
 <div class="row">
-	<div class="sensors col-3" id="s5" onclick="setThres(4)">
-		<span id="s5label"class="label">Port 5</span>
-		</br>
-		<input type="text" id="port5" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s5value" ></span>
-		</br>
-		<span id="s5type"></span>
-	</div>
-	<div class="sensors col-3" id="s6" onclick="setThres(5)">
-		<span id="s6label"class="label">Port 6</span>
-		</br>
-		<input type="text" id="port6" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s6value" ></span>
-		</br>
-		<span id="s6type"></span>
-	</div>
-	<div class="sensors col-3" id="s7" onclick="setThres(6)">
-		<span id="s7label"class="label">Port 7</span>
-		</br>
-		<input type="text" id="port7" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s7value" ></span>
-		</br>
-		<span id="s7type"></span>
-	</div>
-	<div class="sensors col-3" id="s8" onclick="setThres(7)">
-		<span id="s8label"class="label">Port 8</span>
-		</br>
-		<input type="text" id="port8" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s8value" ></span>
-		</br>
-		<span id="s8type"></span>
-	</div>
+<div class="sensors col-3" id="s5" onclick="setThres(4)">
+<span id="s5label"class="label">Port 5</span>
+</br>
+<input type="text" id="port5" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s5value"></span>
+</br>
+<span id="s5type"></span>
+</div>
+<div class="sensors col-3" id="s6" onclick="setThres(5)">
+<span id="s6label"class="label">Port 6</span>
+</br>
+<input type="text" id="port6" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s6value"></span>
+</br>
+<span id="s6type"></span>
+</div>
+<div class="sensors col-3" id="s7" onclick="setThres(6)">
+<span id="s7label"class="label">Port 7</span>
+</br>
+<input type="text" id="port7" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s7value"></span>
+</br>
+<span id="s7type"></span>
+</div>
+<div class="sensors col-3" id="s8" onclick="setThres(7)">
+<span id="s8label"class="label">Port 8</span>
+</br>
+<input type="text" id="port8" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s8value"></span>
+</br>
+<span id="s8type"></span>
+</div>
 </div>
 <div class="row">
-	<div class="sensors col-3" id="s9" onclick="setThres(8)">
-		<span id="s9label"class="label">Port 9</span>
-		</br>
-		<input type="text" id="port9" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s9value" ></span>
-		</br>
-		<span id="s9type"></span>
-	</div>
-	<div class="sensors col-3" id="s10" onclick="setThres(9)">
-		<span id="s10label"class="label">Port 10</span>
-		</br>
-		<input type="text" id="port10" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s10value" ></span>
-		</br>
-		<span id="s10type"></span>
-	</div>
-	<div class="sensors col-3" id="s11" onclick="setThres(10)">
-		<span id="s11label"class="label">Port 11</span>
-		</br>
-		<input type="text" id="port11" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s11value" ></span>
-		</br>
-		<span id="s11type"></span>
-	</div>
-	<div class="sensors col-3" id="s12" onclick="setThres(11)">
-		<span id="s12label"class="label">Port 12</span>
-		</br>
-		<input type="text" id="port12" data-step=".1" data-width="50%" class="dial" value="0" readonly>
-		</br>
-		<span id="s12value" ></span>
-		</br>
-		<span id="s12type"></span>
-	</div>
+<div class="sensors col-3" id="s9" onclick="setThres(8)">
+<span id="s9label"class="label">Port 9</span>
+</br>
+<input type="text" id="port9" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s9value"></span>
+</br>
+<span id="s9type"></span>
+</div>
+<div class="sensors col-3" id="s10" onclick="setThres(9)">
+<span id="s10label"class="label">Port 10</span>
+</br>
+<input type="text" id="port10" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s10value"></span>
+</br>
+<span id="s10type"></span>
+</div>
+<div class="sensors col-3" id="s11" onclick="setThres(10)">
+<span id="s11label"class="label">Port 11</span>
+</br>
+<input type="text" id="port11" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s11value"></span>
+</br>
+<span id="s11type"></span>
+</div>
+<div class="sensors col-3" id="s12" onclick="setThres(11)">
+<span id="s12label"class="label">Port 12</span>
+</br>
+<input type="text" id="port12" data-step=".1" data-width="50%" class="dial" value="0" readonly>
+</br>
+<span id="s12value"></span>
+</br>
+<span id="s12type"></span>
+</div>
 </div>

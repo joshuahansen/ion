@@ -1,0 +1,14 @@
+[
+	{
+		"email": "example@gmail.com",
+		"disable": 1
+	},
+	{
+		"email": "sample@yahoo.com.au",
+		"disable": 0
+	},
+	{
+		"email": "test@hotmail.com",
+		"disable": 1
+	}
+]

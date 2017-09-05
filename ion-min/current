@@ -3,7 +3,7 @@
 			"port": 1,
 			"name": "Back Door Temperature Sensor",
 			"type": 1,
-			"stringValue": "36.75",
+			"stringValue": "26.75",
 			"intValue": 26,
 			"threshMax": 56,
 			"threshMin": 20
