@@ -72,7 +72,6 @@ function loadContent(file, activeMenuId, loadData) {
 	}
 	if(activeMenuId.localeCompare("info") == 0)
 	{
-//		updateCurrentDials();
 		updateCurrentValues();
 	}
 }
@@ -109,8 +108,9 @@ function sendJSON(url)
 }
 function loadSensors()
 {
-//	dataInterval = setInterval(updateCurrentDials, 15000);
-//	updateCurrentDials();
+	//	updateCurrentDials();
+	//	dataInterval = setInterval(updateCurrentDials, 15000);
+	updateCurrentValues();
 	dataInterval = setInterval(updateCurrentValues, 15000);
 }
 function updateCurrentValues()
@@ -126,7 +126,7 @@ function updateCurrentValues()
 			}
 			//Set all port Values
 			document.getElementById("s" + data.sensors[i].port + "value").innerHTML = data.sensors[i].stringValue;
-			document.getElementById("s" + data.sensors[i].port + "value").style.fontSize = "50px";
+			document.getElementById("s" + data.sensors[i].port + "value").style.fontSize = "45px";
 			document.getElementById("port" + data.sensors[i].port).style.visibility = "hidden";
 			//Set all port types
 			document.getElementById("s" + data.sensors[i].port + "type").innerHTML = sensorTypes[data.sensors[i].type];
@@ -867,6 +867,7 @@ function lineChart(canvas, chart, attributes)
 			chart.moveTo(padding + newPoint, chartStart - currentPoint);
 			newPoint += spacing;
 			chart.lineTo(padding + newPoint, chartStart - nextPoint);
+			//chart.quadraticCurveTo(padding+newPoint, chartStart-currentPoint, padding + newPoint, chartStart - nextPoint);
 			chart.lineWidth = 3;
 			chart.strokeStyle = attributes.data.datasets[i].borderColor;
 			chart.stroke();
