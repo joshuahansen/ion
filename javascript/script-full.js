@@ -59,7 +59,6 @@ function loadContent(file, activeMenuId, loadData) {
 	xhttp.open("GET", file, true);
 	xhttp.send();	
 
-//	$("#display").load(file, loadData);
 	setActive(document.getElementById(activeMenuId));
 	if(activeMenuId.localeCompare("config") == 0)
 	{
@@ -72,7 +71,7 @@ function loadContent(file, activeMenuId, loadData) {
 	}
 	if(activeMenuId.localeCompare("info") == 0)
 	{
-		updateCurrentValues();
+
 	}
 }
 
@@ -108,10 +107,8 @@ function sendJSON(url)
 }
 function loadSensors()
 {
-	//	updateCurrentDials();
-	//	dataInterval = setInterval(updateCurrentDials, 15000);
-	updateCurrentValues();
-	dataInterval = setInterval(updateCurrentValues, 15000);
+	customDials();
+	dataInterval = setInterval(customDials, 15000);
 }
 function updateCurrentValues()
 {
@@ -125,7 +122,7 @@ function updateCurrentValues()
 				document.getElementById("s" + data.sensors[i].port + "value").innerHTML = data.sensors[i].stringValue;
 			}
 			//Set all port Values
-			document.getElementById("s" + data.sensors[i].port + "value").innerHTML = data.sensors[i].stringValue;
+			//document.getElementById("s" + data.sensors[i].port + "value").innerHTML = data.sensors[i].stringValue;
 			document.getElementById("s" + data.sensors[i].port + "value").style.fontSize = "45px";
 			document.getElementById("port" + data.sensors[i].port).style.visibility = "hidden";
 			//Set all port types
@@ -138,111 +135,162 @@ function updateCurrentValues()
 		}
 	});
 }
-function updateCurrentDials()
+function customDials()
 {
+	var value, stringValue, portNum;
 	loadJSON("current", function(jsonData) { 
 		success:
 		var data = JSON.parse(jsonData);
 		for(var i = 0; i < data.sensors.length; i++)
 		{
-			//Set value to empty string if no sensor is attached
-			if(data.sensors[i].type == 0)
+			value = data.sensors[i].intValue;
+			stringValue = data.sensors[i].stringValue;
+			portNum = data.sensors[i].port;
+			//Set all port Values
+			var smallestDem = "width";
+			/*var smallest = document.getElementById("s" + data.sensors[i].port).offsetWidth;
+			console.log("DEBUG: Width = " + smallest);
+			console.log("DEBUG: Height = " + document.getElementById("s" + data.sensors[i].port).offsetHeight);
+			if(smallest >= document.getElementById("s" + data.sensors[i].port).offsetHeight)
 			{
-				$("#s" + data.sensors[i].port + "value").text("");
+				smallest = document.getElementById("s" + data.sensors[i].port).offsetHeight;
+				smallestDem = "height";
+			}*/
+			if(window.innerWidth < 1000)
+			{
+				smallestDem = "height"
 			}
-			//Set all port types
-			$("#s"+ data.sensors[i].port + "type").text(sensorTypes[data.sensors[i].type]);
+			var range = 0;
+			switch(data.sensors[i].type)
+			{
+				case 1:
+					range = 50;
+					break;
+				case 2:
+				case 4:
+				case 6:
+				case 8:
+					range = 1;
+					break;
+				case 3:
+					range = 100;
+					break;
+				case 5:
+					range = 100
+					break;
 
-			//Sets name of sensor
+				case 7:
+					range = 5;
+					break;
+			}
+
+			dials(value, stringValue, "canvas"+portNum, range, smallestDem, data.sensors[i].type, data.sensors[i].threshMax);
+			//Set all port types
+			document.getElementById("s" + data.sensors[i].port + "type").innerHTML = sensorTypes[data.sensors[i].type];
+			//Set all port names
 			if(data.sensors[i].name.localeCompare("") != 0)
 			{
-				$("#s" + data.sensors[i].port + "label").text(data.sensors[i].name);
+				document.getElementById("s" + data.sensors[i].port + "label").innerHTML = data.sensors[i].name;
 			}
-			//Set all port Values
-			$("#s" + data.sensors[i].port + "value").text(data.sensors[i].stringValue);
-			//Creates Dials
-			$('.dial').knob({
-				'change' : function (v) { console.log(v); }
-			});
-			$('.dial-thresh').knob({
-				'change' : function (v) { console.log(v); }
-			});
-			if(data.sensors[i].type == 4 || data.sensors[i].type == 6 || data.sensors[i].type == 8)
-			{
-				if(data.sensors[i].intValue != data.sensors[i].threshMax)
-				{
-					$('#port' + data.sensors[i].port).trigger(
-						'configure',
-						{
-							"min":0,
-							"max":1,
-							"fgColor":"#f21313",
-							"bgColor": "#43f943",
-							"inputColor": "#43f943",
-							"displayInput": false,
-							"angleArc": 180,
-							"angleOffset": -90
-						}
-					);
-				}
-				else
-				{
-					$('#port' + data.sensors[i].port).trigger(
-						'configure',
-						{
-							"min":0,
-							"max":1,
-							"fgColor":"#f21313",
-							"bgColor": "#43f943",
-							"inputColor": "#f21313",
-							"displayInput": false,
-							"angleArc": 180,
-							"angleOffset": -90
-						}
-					);
-				}
-			}
-			else 
-			{
-				if(data.sensors[i].intValue > data.sensors[i].threshMax)
-				{
-					$('#port' + data.sensors[i].port).trigger(
-						'configure',
-						{
-							"min":0,
-							"max":100,
-							"fgColor":"#f21313",
-							"inputColor": "#f21313"
-						}
-					);
-				}
-				else
-				{
-					$('#port' + data.sensors[i].port).trigger(
-						'configure',
-						{
-							"min":0,
-							"max":100,
-							"fgColor":"#43f943",
-							"inputColor": "#43f943"
-						}
-					);
-				}
-			}
-			$('.dialThresh').trigger(
-				'configure',
-				{
-					"min":0,
-					"max":100,
-					"fgColor": "#f21313"
-				}
-			);
-			$('#port' + data.sensors[i].port)
-				.val(data.sensors[i].intValue)
-				.trigger('change');
 		}
 	});
+	console.log("=========================");
 }
+
+function dials(value, stringValue, canvasID, maxValue, smallestDem, type, maxThresh)
+{
+	console.log("DEBUG: " + smallestDem);
+	var canvas = document.getElementById(canvasID);
+	var ctx = canvas.getContext("2d");
+	if(smallestDem == "width")
+	{
+		canvas.style.width = '100%';
+
+		var W = canvas.width = canvas.offsetWidth;
+		var H = canvas.height = canvas.width;
+	}
+	else
+	{
+		canvas.style.height = '100%';
+
+		var H = canvas.height = canvas.offsetHeight;
+		var W = canvas.width = canvas.height;
+	}
+	var degrees = 0;
+	var new_degrees = 0;
+	var difference = 0;
+	var color = "lightgreen";
+	if(value >= maxThresh)
+	{
+		color = "red";
+	}
+	var bgcolor = "#222";
+	var text;
+	var animation_loop, redraw_loop;
+	
+	function init()
+	{
+		if(type != 0)
+		{
+			ctx.clearRect(0, 0, W, H);
+			ctx.beginPath();
+			ctx.strokeStyle = bgcolor;
+			ctx.lineWidth = 30;
+			ctx.arc(W/2, H/2, W/2.5, 0, Math.PI*2, false);
+			ctx.stroke();
+
+			var radians = degrees * Math.PI / 180;
+			ctx.beginPath();
+			ctx.strokeStyle = color;
+			ctx.lineWidth = 30;
+			ctx.arc(W/2, H/2, W/2.5, 0 - 90*Math.PI/180, radians - 90*Math.PI/180, false); 
+			ctx.stroke();
+		}
+		if(type == 2 || type == 4 || type == 6 || type == 8)
+		{
+			ctx.clearRect(0, 0, W, H);
+			ctx.beginPath();
+			ctx.strokeStyle = color;
+			ctx.lineWidth = 30;
+			ctx.arc(W/2, H/2, W/2.5, Math.PI, 0, false);
+			ctx.stroke();
+		}
+		ctx.fillStyle = color;
+		ctx.font = "25px bebas";
+		text = stringValue;
+		text_width = ctx.measureText(text).width;
+		ctx.fillText(text, W/2 - text_width/2, H/2 + 15);
+	}
+	
+	function draw()
+	{
+		if(typeof animation_loop != undefined) clearInterval(animation_loop);
+		
+		new_degrees = Math.round((value/maxValue) * 360 );
+		if(isNaN(new_degrees))
+		{
+			new_degrees = degrees;
+		}
+		difference = new_degrees - degrees;
+		animation_loop = setInterval(animate_to, 1000/difference);
+	}
+	
+	function animate_to()
+	{
+		if(degrees == new_degrees) 
+		clearInterval(animation_loop);
+	
+		if(degrees < new_degrees)
+			degrees++;
+		else
+			degrees--;
+		
+		init();
+	}
+	
+	draw();
+}
+
 function setThres(portNum) {
 	loadJSON("current", function(jsonData) {
 		success: {
@@ -393,14 +441,14 @@ function loadAlerts() {
 		var counter = 1;
 		for(var i = 0; i < data.sensors.length; i++)
 		{
-			if(data.sensors[i].intValue > data.sensors[i].threshMax)
-			{
-				addAlert("Port " + data.sensors[i].port, 1, counter);
-				counter++;
-			}
-			else if(data.sensors[i].intValue < data.sensors[i].threshMin)
+			if(data.sensors[i].intValue >= data.sensors[i].threshMax)
 			{
 				addAlert("Port " + data.sensors[i].port, 0, counter);
+				counter++;
+			}
+			else if(data.sensors[i].intValue <= data.sensors[i].threshMin)
+			{
+				addAlert("Port " + data.sensors[i].port, 1, counter);
 				counter++;
 			}
 

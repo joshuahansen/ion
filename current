@@ -4,7 +4,7 @@
 			"name": "Back Door Temperature Sensor",
 			"type": 1,
 			"stringValue": "23.75",
-			"intValue": 23,
+			"intValue": 24,
 			"threshMax": 56,
 			"threshMin": 20
 		},
@@ -21,10 +21,10 @@
 			"port": 3,
 			"name": "Side Door",
 			"type": 2,
-			"stringValue": "43.23",
-			"intValue": 43,
-			"threshMax": 40,
-			"threshMin": 25
+			"stringValue": "Smoke",
+			"intValue": 1,
+			"threshMax": 1,
+			"threshMin": 0
 		},
 		{
 			"port": 4,
@@ -92,11 +92,11 @@
 		{
 			"port": 11,
 			"name": "",
-			"type": 1,
-			"stringValue": "27.29",
-			"intValue": 27,
-			"threshMax": 56,
-			"threshMin": 20
+			"type": 0,
+			"stringValue": "N/A",
+			"intValue": 0,
+			"threshMax": 0,
+			"threshMin": 0
 		},
 		{
 			"port": 12,

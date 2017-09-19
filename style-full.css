@@ -102,8 +102,13 @@ div.navImage {
 
 /*Sensor Info CSS*/
 /***********************************************************************/
-
+#canvas {
+	display: block;
+	width: 100%;
+	margin: auto;
+}
 .sensors {
+	position: relative;
 	min-height: 230px;
 	border-style: solid;
 	border-width: 5px;
