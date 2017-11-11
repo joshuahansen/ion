@@ -199,96 +199,21 @@ function customDials()
 
 function dials(value, stringValue, canvasID, maxValue, smallestDem, type, maxThresh)
 {
-	console.log("DEBUG: " + smallestDem);
-	var canvas = document.getElementById(canvasID);
-	var ctx = canvas.getContext("2d");
-	if(smallestDem == "width")
-	{
-		canvas.style.width = '100%';
+	var data = {value: value,
+			displayValue: stringValue,
+			warningLevel: maxThresh,
+			maxValue: maxValue,
+			type: type};
 
-		var W = canvas.width = canvas.offsetWidth;
-		var H = canvas.height = canvas.width;
-	}
-	else
-	{
-		canvas.style.height = '100%';
+	var settings = {canvasID: canvasID,
+		dataset: data,
+		bgcolor: "#222",
+		color: "lightgreen",
+		warningColor: "red",
+		height: 300,
+		width: 250};
 
-		var H = canvas.height = canvas.offsetHeight;
-		var W = canvas.width = canvas.height;
-	}
-	var degrees = 0;
-	var new_degrees = 0;
-	var difference = 0;
-	var color = "lightgreen";
-	if(value >= maxThresh)
-	{
-		color = "red";
-	}
-	var bgcolor = "#222";
-	var text;
-	var animation_loop, redraw_loop;
-	
-	function init()
-	{
-		if(type != 0)
-		{
-			ctx.clearRect(0, 0, W, H);
-			ctx.beginPath();
-			ctx.strokeStyle = bgcolor;
-			ctx.lineWidth = 30;
-			ctx.arc(W/2, H/2, W/2.5, 0, Math.PI*2, false);
-			ctx.stroke();
-
-			var radians = degrees * Math.PI / 180;
-			ctx.beginPath();
-			ctx.strokeStyle = color;
-			ctx.lineWidth = 30;
-			ctx.arc(W/2, H/2, W/2.5, 0 - 90*Math.PI/180, radians - 90*Math.PI/180, false); 
-			ctx.stroke();
-		}
-		if(type == 2 || type == 4 || type == 6 || type == 8)
-		{
-			ctx.clearRect(0, 0, W, H);
-			ctx.beginPath();
-			ctx.strokeStyle = color;
-			ctx.lineWidth = 30;
-			ctx.arc(W/2, H/2, W/2.5, Math.PI, 0, false);
-			ctx.stroke();
-		}
-		ctx.fillStyle = color;
-		ctx.font = "25px bebas";
-		text = stringValue;
-		text_width = ctx.measureText(text).width;
-		ctx.fillText(text, W/2 - text_width/2, H/2 + 15);
-	}
-	
-	function draw()
-	{
-		if(typeof animation_loop != undefined) clearInterval(animation_loop);
-		
-		new_degrees = Math.round((value/maxValue) * 360 );
-		if(isNaN(new_degrees))
-		{
-			new_degrees = degrees;
-		}
-		difference = new_degrees - degrees;
-		animation_loop = setInterval(animate_to, 1000/difference);
-	}
-	
-	function animate_to()
-	{
-		if(degrees == new_degrees) 
-		clearInterval(animation_loop);
-	
-		if(degrees < new_degrees)
-			degrees++;
-		else
-			degrees--;
-		
-		init();
-	}
-	
-	draw();
+	newDial(settings);
 }
 
 function setThres(portNum) {
@@ -750,32 +675,38 @@ function loadHistory()
 			{
 				if(dataset.length == 0)
 				{
+					console.log("hiding chart: " + chartDiv);
 					document.getElementById(chartDiv).style.display = "none";
-				}
-				var canvas = document.getElementById(chartID);
-				if(window.innerWidth > 1000)
-				{
-					canvas.width = window.innerWidth/3.3;
-					canvas.height = window.innerHeight/2.8;
 				}
 				else
 				{
-					canvas.width = window.innerWidth/1.2;
-					canvas.height = window.innerHeight/2;
-				}
-				var sh = document.getElementById(chartID).getContext('2d');
-				var chart = new lineChart(canvas, sh, {
-					type: "line",
-					data: {
-						labels: hLabels,
-						datasets: dataset
+					var canvas = document.getElementById(chartID);
+					if(window.innerWidth > 1000)
+					{
+						canvas.width = window.innerWidth/3.3;
+						canvas.height = window.innerHeight/2.8;
 					}
-				});
+					else
+					{
+						canvas.width = window.innerWidth/1.2;
+						canvas.height = window.innerHeight/2;
+					}
+					var sh = document.getElementById(chartID).getContext('2d');
+					var chart = new lineChart(canvas, sh, {
+						type: "line",
+						data: {
+							labels: hLabels,
+							datasets: dataset
+						}
+					});
+				}
+				console.log("Move to next chart");
 			}
 			function drawCharts()
 			{
 				for(var count = 0; count < 7; count++)
 				{
+					console.log("Draw charts")
 					addDataset(chartID[count], datasets[count], chartDiv[count], hLabels);
 				}
 			}
@@ -783,145 +714,6 @@ function loadHistory()
 			drawCharts();
 			}		
 		});
-}
-function lineChart(canvas, chart, attributes)
-{
-	var padding = 30;
-	var chartStart = canvas.height - padding;
-	/*draw y-axis*/
-	chart.beginPath();
-	chart.moveTo(padding, chartStart);
-	chart.lineTo(padding,padding);
-	chart.lineWidth = 3;
-	chart.strokeStyle = "#D3D3D3"
-	chart.stroke();
-	chart.closePath();
-	/*add y-axis values*/
-	var rangeOfValues = attributes.data.datasets.length;
-	var point = 0;
-	var max = 0;
-	for(var i = 0; i < rangeOfValues; ++i)
-	{
-		for(var j = 0; j < attributes.data.datasets[i].data.length; ++j)
-		{
-			if(max < attributes.data.datasets[i].data[j])
-			{
-				max = attributes.data.datasets[i].data[j];
-			}
-		}
-	}
-	if(max != 1)
-	{
-		max = Math.ceil(max/10);
-		max = max * 10;
-	
-		var pointDist = (canvas.height - (padding * 2))/(max/10);
-		var newPoint = 0;
-		for(var i = 0; i <= (max/10); ++i)
-		{
-			chart.beginPath();
-			chart.moveTo(padding - 5, chartStart - newPoint);
-			chart.lineTo(canvas.width - padding, chartStart - newPoint);
-			chart.lineWidth = 1;
-			chart.strokeStyle = "#D3D3D3"
-			chart.stroke();
-			chart.closePath();
-			chart.fillText((i * 10), 1, chartStart - newPoint);
-			newPoint += pointDist;
-		}
-	}
-	else
-	{
-		chart.beginPath();
-		chart.moveTo(padding - 5, chartStart);
-		chart.lineTo(padding, chartStart);
-		chart.lineWidth = 1;
-		chart.stroke();
-		chart.closePath();
-		chart.fillText(0, 1, chartStart);
-		chart.beginPath();
-		chart.moveTo(padding - 5, padding);
-		chart.lineTo(canvas.width - padding, padding);
-		chart.lineWidth = 1;
-		chart.strokeStyle = "#D3D3D3"
-		chart.stroke();
-		chart.closePath();
-		chart.fillText(max, 1, padding);
-	}
-	/*draw x-axis*/
-	chart.beginPath();
-	chart.moveTo(padding, chartStart);
-	chart.lineTo((canvas.width - padding), chartStart);
-	chart.lineWidth = 3;
-	chart.strokeStyle = "#D3D3D3"
-	chart.stroke();
-	chart.closePath();
-	/*add x-axis values*/
-	var labels = attributes.data.labels;
-	var spacing = (canvas.width - (padding  * 2)) / (labels.length - 1);
-	var newPoint = 0;
-	var axisLabel = padding - 15;
-	var axisDash = padding - 5;
-	for(var i = 0; i < labels.length; ++i)
-	{
-		chart.beginPath();
-		chart.moveTo((padding + newPoint), (canvas.height - axisDash));
-		chart.lineTo((padding + newPoint), padding);
-		chart.lineWidth = 1;
-		chart.strokeStyle = "#D3D3D3";
-		chart.stroke();
-		chart.closePath();
-		chart.fillText(labels[i], padding + newPoint, canvas.height - axisLabel);
-		newPoint += spacing;
-	}
-	/*add port labels*/
-	var labelYPos = 15;
-	newPoint = 0;
-	lineLength = spacing * 0.7;
-	for(var i = 0; i < rangeOfValues; ++i)
-	{
-		if(i > (labels.length - 1))
-		{
-			labelYPos = labelYPos + 15;
-		}
-		chart.font = "15px Arial";
-		chart.fillText(attributes.data.datasets[i].label, padding + newPoint, labelYPos);
-		chart.beginPath();
-		chart.moveTo(padding + newPoint, labelYPos + 5);
-		chart.lineTo(padding + newPoint + lineLength , labelYPos + 5);
-		chart.lineWidth = 5;
-		chart.strokeStyle = attributes.data.datasets[i].borderColor;
-		chart.stroke();
-		chart.closePath();
-		newPoint += spacing;
-	}
-
-	/*add data*/
-	for(var i = 0; i < rangeOfValues; ++i)
-	{
-		newPoint = 0;
-		for(var j = 0; j < attributes.data.datasets[i].data.length; ++j)
-		{
-			var currentPoint = attributes.data.datasets[i].data[j];
-			currentPoint = currentPoint/max;
-			currentPoint = currentPoint * (canvas.height - (padding * 2));
-			
-			var nextPoint = attributes.data.datasets[i].data[j+1];
-			nextPoint = nextPoint/max;
-			nextPoint = nextPoint * (canvas.height - (padding * 2));
-			
-			chart.beginPath();
-			chart.moveTo(padding + newPoint, chartStart - currentPoint);
-			newPoint += spacing;
-			chart.lineTo(padding + newPoint, chartStart - nextPoint);
-			//chart.quadraticCurveTo(padding+newPoint, chartStart-currentPoint, padding + newPoint, chartStart - nextPoint);
-			chart.lineWidth = 3;
-			chart.strokeStyle = attributes.data.datasets[i].borderColor;
-			chart.stroke();
-			chart.closePath();
-		}
-	}
-
 }
 /***************************************/
 /*ADMIN*/

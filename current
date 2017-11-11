@@ -19,93 +19,93 @@
 		},
 		{
 			"port": 3,
-			"name": "Side Door Temperature Sensor",
-			"type": 1,
-			"stringValue": "23.75",
-			"intValue": 24,
-			"threshMax": 56,
-			"threshMin": 20
+			"name": "Side Door",
+			"type": 2,
+			"stringValue": "Smoke",
+			"intValue": 1,
+			"threshMax": 1,
+			"threshMin": -1
 		},
 		{
 			"port": 4,
-			"name": "Front Rack Temperature Sensor",
-			"type": 1,
-			"stringValue": "25.23",
-			"intValue": 25,
-			"threshMax": 58,
+			"name": "",
+			"type": 3,
+			"stringValue": "35.23",
+			"intValue": 35,
+			"threshMax": 67,
 			"threshMin": 20
 		},
 		{
 			"port": 5,
-			"name": "Back Rack Temperature Sensor",
-			"type": 1,
-			"stringValue": "23.75",
-			"intValue": 24,
-			"threshMax": 56,
-			"threshMin": 20
+			"name": "",
+			"type": 4,
+			"stringValue": "Closed",
+			"intValue": 0,
+			"threshMax": 1,
+			"threshMin": -1
 		},
 		{
 			"port": 6,
-			"name": "Side Rack Temperature Sensor",
-			"type": 1,
-			"stringValue": "25.23",
-			"intValue": 25,
-			"threshMax": 58,
-			"threshMin": 20
+			"name": "",
+			"type": 5,
+			"stringValue": "41.92",
+			"intValue": 41,
+			"threshMax": 54,
+			"threshMin": 12
 		},
 		{
 			"port": 7,
-			"name": "Back Door Temperature Sensor",
-			"type": 1,
-			"stringValue": "23.75",
-			"intValue": 24,
-			"threshMax": 56,
-			"threshMin": 20
+			"name": "",
+			"type": 6,
+			"stringValue": "Contact",
+			"intValue": 1,
+			"threshMax": 1,
+			"threshMin": -1
 		},
 		{
 			"port": 8,
-			"name": "Front Door Temperature Sensor",
+			"name": "",
 			"type": 1,
-			"stringValue": "25.23",
+			"stringValue": "25.20",
 			"intValue": 25,
-			"threshMax": 58,
-			"threshMin": 20
+			"threshMax": 70,
+			"threshMin": 30
 		},
 		{
 			"port": 9,
-			"name": "Back Door Temperature Sensor",
+			"name": "",
 			"type": 1,
-			"stringValue": "23.75",
-			"intValue": 24,
-			"threshMax": 56,
-			"threshMin": 20
+			"stringValue": "23.23",
+			"intValue": 23,
+			"threshMax": 60,
+			"threshMin": 15
 		},
 		{
 			"port": 10,
-			"name": "Front Door Temperature Sensor",
+			"name": "",
 			"type": 1,
-			"stringValue": "25.23",
-			"intValue": 25,
-			"threshMax": 58,
-			"threshMin": 20
+			"stringValue": "45.22",
+			"intValue": 45,
+			"threshMax": 50,
+			"threshMin": 25
 		},
 		{
 			"port": 11,
-			"name": "Back Door Temperature Sensor",
-			"type": 1,
-			"stringValue": "23.75",
-			"intValue": 24,
-			"threshMax": 56,
-			"threshMin": 20
+			"name": "",
+			"type": 0,
+			"stringValue": "N/A",
+			"intValue": 0,
+			"threshMax": 1,
+			"threshMin": -1
 		},
 		{
 			"port": 12,
-			"name": "Front Door Temperature Sensor",
-			"type": 1,
-			"stringValue": "25.23",
-			"intValue": 25,
-			"threshMax": 58,
-			"threshMin": 20
+			"name": "",
+			"type": 4,
+			"stringValue": "Open",
+			"intValue": 1,
+			"threshMax": 1,
+			"threshMin": -1
 		}
 	]
 }
